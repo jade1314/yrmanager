@@ -1,0 +1,149 @@
+//
+//  PrefixHeader.pch
+//  MiAiApp
+//
+//  Created by JadeM on 2017/5/18.
+//  Copyright © 2017年 JadeM. All rights reserved.
+//
+//
+//                            _ooOoo_
+//                           o8888888o
+//                           88" . "88
+//                           (| -_- |)
+//                            O\ = /O
+//                        ____/`---'\____
+//                      .   ' \\| |// `.
+//                       / \\||| : |||// \
+//                     / _||||| -:- |||||- \
+//                       | | \\\ - /// | |
+//                     | \_| ''\---/'' | |
+//                      \ .-\__ `-` ___/-. /
+//                   ___`. .' /--.--\ `. . __
+//                ."" '< `.___\_<|>_/___.' >'"".
+//               | | : `- \`.;`\ _ /`;.`/ - ` : | |
+//                 \ \ `-. \_ __\ /__ _/ .-` / /
+//         ======`-.____`-.___\_____/___.-`____.-'======
+//                            `=---='
+//
+//         .............................................
+//                  佛祖镇楼                  BUG辟易
+//          佛曰:
+//                  写字楼里写字间，写字间里程序员；
+//                  程序人员写程序，又拿程序换酒钱。
+//                  酒醒只在网上坐，酒醉还来网下眠；
+//                  酒醉酒醒日复日，网上网下年复年。
+//                  但愿老死电脑间，不愿鞠躬老板前；
+//                  奔驰宝马贵者趣，公交自行程序员。
+//                  别人笑我忒疯癫，我笑自己命太贱；
+//                  不见满街漂亮妹，哪个归得程序员？
+
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#ifdef __OBJC__
+
+
+//全局宏
+#import "UtilsMacros.h"
+#import "URLMacros.h"
+#import "FontAndColorMacros.h"
+#import "ThirdMacros.h"
+#import "CommonMacros.h"
+
+//基础类
+#import "AppDelegate.h"
+#import "AppDelegate+AppService.h"
+#import "RootViewController.h"
+#import "RootNavigationController.h"
+#import "MBProgressHUD+XY.h"
+#import "PPNetworkHelper.h"
+#import "AppManager.h"
+
+#import "UserManager.h"
+#import "IMManager.h"
+#import "UIButton+XYButton.h"
+
+//Helper
+//导入日期转换类
+#import "DateHelper.h"
+//导入工具类
+#import "ToolHelper.h"
+//导入frame的分类
+#import "UIView+frame.h"
+//导入扩展类
+#import "NSMutableDictionary+Extent.h"
+//导入适配类
+
+#import <Masonry.h>
+#import "RMMapper.h"
+//导入刷新类
+#import "MJRefresh.h"
+
+//提示框
+#import "DLLoading.h"
+
+#import "UIImage+ImageWithColor.h"
+#import "UIView+XMGExtension.h"
+//字典的扩展方法
+#import "NSMutableDictionary+Set.h"
+#import "NSArray+set.h"
+
+//富文本处理办法
+#import "NSString+AttributedString.h"
+#import "UIImageView+Tool.h"
+#import "UIView+ReFreshView.h"
+
+
+
+//导入新的WebKit框架
+#import <WebKit/WebKit.h>
+
+//网络框架
+#import "AFNetworking.h"
+//导入弹窗框架
+#import "MBProgressHUD.h"
+//网络请求
+#import "HttpRequest.h"
+//适配
+#import "Masonry.h"
+//钥匙串
+#import "Chain.h"
+//刷新
+#import "FllRefreshFooter.h"
+#import "FllRefreshHeader.h"
+//检测网络状态
+#import "Reachability.h"
+#import "AFNetworkActivityIndicatorManager.h"
+//session 失效跳转
+#import "UIView+TYAlertView.h"
+#import "TradeErrorAlertView.h"
+
+//搜索键盘
+#import "Y_Keyboard.h"
+#import "AppDelegate.h"
+#import "HttpRequest.h"
+
+
+
+
+#import "UIView+frame.h"
+#import <SystemConfiguration/SystemConfiguration.h>
+
+#import "DecimalNumber.h"
+
+//scroll空图片
+#import "UIScrollView+EmptyDataSet.h"
+
+// 主题
+//#import "TXSakuraKit.h"
+
+//第三方
+#import <YYKit.h>
+#import <MBProgressHUD.h>
+#import <Masonry.h>
+#import <SDWebImage/UIImageView+WebCache.h>
+
+#endif
+
+#endif /* PrefixHeader_pch */
