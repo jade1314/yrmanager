@@ -72,7 +72,7 @@ SINGLETON_FOR_CLASS(UserManager);
                 [[IMManager sharedIMManager] IMLogin:data[@"imId"] IMPwd:data[@"imPass"] completion:^(BOOL success, NSString *des) {
                     [MBProgressHUD hideHUD];
                     if (success) {
-                        self.curUserInfo = [UserInfo modelWithDictionary:data];
+                        self.curUserInfo = [UserInfo yy_modelWithDictionary:data];
                         [self saveUserInfo];
                         self.isLogined = YES;
                         if (completion) {
@@ -106,7 +106,7 @@ SINGLETON_FOR_CLASS(UserManager);
 -(void)saveUserInfo{
     if (self.curUserInfo) {
         YYCache *cache = [[YYCache alloc]initWithName:KUserCacheName];
-        NSDictionary *dic = [self.curUserInfo modelToJSONObject];
+        NSDictionary *dic = [self.curUserInfo yy_modelToJSONObject];
         [cache setObject:dic forKey:KUserModelCache];
     }
     
@@ -116,7 +116,7 @@ SINGLETON_FOR_CLASS(UserManager);
     YYCache *cache = [[YYCache alloc]initWithName:KUserCacheName];
     NSDictionary * userDic = (NSDictionary *)[cache objectForKey:KUserModelCache];
     if (userDic) {
-        self.curUserInfo = [UserInfo modelWithJSON:userDic];
+        self.curUserInfo = [UserInfo yy_modelWithJSON:userDic];
         return YES;
     }
     return NO;

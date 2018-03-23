@@ -13,6 +13,7 @@
 #import "AESCipher.h"
 #import "HeaderModel.h"
 
+
 #ifdef DEBUG
 #define PPLog(...) printf("[%s] %s [第%d行]: %s\n", __TIME__ ,__PRETTY_FUNCTION__ ,__LINE__, [[NSString stringWithFormat:__VA_ARGS__] UTF8String])
 #else
@@ -207,8 +208,8 @@ static AFHTTPSessionManager *_sessionManager;
 
 #pragma mark - ——————— 加密 Header ————————
 +(void)encodeHeader{
-
-    NSString *contentStr = [[HeaderModel new] modelToJSONString];
+    
+    NSString *contentStr = [[HeaderModel new] yy_modelToJSONString];
     NSString *AESStr = aesEncrypt(contentStr);
     
     [_sessionManager.requestSerializer setValue:AESStr forHTTPHeaderField:@"header-encrypt-code"];

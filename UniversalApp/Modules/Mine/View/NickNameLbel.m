@@ -24,11 +24,11 @@
     NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:NSStringFormat(@"%ld",age)];
     UIImage *img = sex==UserGenderMale ? ImageWithFile(@"man") : ImageWithFile(@"woman");
     CGSize size = CGSizeMake(img.size.width+2, img.size.height);
-    NSMutableAttributedString *attachText1= [NSMutableAttributedString attachmentStringWithContent:img contentMode:UIViewContentModeLeft attachmentSize:size alignToFont:[UIFont systemFontOfSize:18] alignment:YYTextVerticalAlignmentCenter];
+    NSMutableAttributedString *attachText1= [NSMutableAttributedString yy_attachmentStringWithContent:img contentMode:UIViewContentModeLeft attachmentSize:size alignToFont:[UIFont systemFontOfSize:18] alignment:YYTextVerticalAlignmentCenter];
     
     [attri insertAttributedString:attachText1 atIndex:0];
-    attri.color = KWhiteColor;
-    attri.font = SYSTEMFONT(12);
+    attri.yy_color = KWhiteColor;
+    attri.yy_font = SYSTEMFONT(12);
 
     if (sex == 0 && level == 0 && age == 0) {
         [self.nickNameLbl mas_remakeConstraints:^(MASConstraintMaker *make) {

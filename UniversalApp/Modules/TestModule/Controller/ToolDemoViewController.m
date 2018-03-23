@@ -218,14 +218,14 @@
         }
         
         NSMutableAttributedString *one = [[NSMutableAttributedString alloc] initWithString:str];
-        one.font = [UIFont boldSystemFontOfSize:30];
-        one.color = [UIColor whiteColor];
+        one.yy_font = [UIFont boldSystemFontOfSize:30];
+        one.yy_color = [UIColor whiteColor];
         
         YYTextShadow *shadow = [YYTextShadow new];
         shadow.color = [UIColor colorWithWhite:0.000 alpha:0.490];
         shadow.offset = CGSizeMake(0, 1);
         shadow.radius = 5;
-        one.textShadow = shadow;
+        one.yy_textShadow = shadow;
         
         YYTextShadow *shadow0 = [YYTextShadow new];
         shadow0.color = [UIColor colorWithWhite:0.000 alpha:0.20];
@@ -246,7 +246,7 @@
         [highlight setColor:[UIColor colorWithRed:1.000 green:0.795 blue:0.014 alpha:1.000]];
         [highlight setShadow:shadow0];
         [highlight setInnerShadow:innerShadow0];
-        [one setTextHighlight:highlight range:one.rangeOfAll];
+        [one yy_setTextHighlight:highlight range:one.yy_rangeOfAll];
         
         [text appendAttributedString:one];
     }

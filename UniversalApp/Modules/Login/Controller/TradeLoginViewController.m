@@ -361,7 +361,7 @@
         NSArray * companyArr = [NSJSONSerialization JSONObjectWithData:responseObject
                                                     options:NSJSONReadingAllowFragments
                                                           error:&error];
-        
+        NSLog(@"%@",companyArr);
         
         
     } failure:^(NSError *error, NSURLSessionTask *task) {

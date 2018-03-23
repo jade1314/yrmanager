@@ -88,7 +88,7 @@
 #pragma mark ————— 非加密时也要传输的头部内容 也可能不需要，暂时保留 —————
 -(NSDictionary<NSString *,NSString *> *)requestHeaderFieldValueDictionary{
     //加密header部分
-    NSString *contentStr = [[HeaderModel new] modelToJSONString];
+    NSString *contentStr = [[HeaderModel new] yy_modelToJSONString];
     NSString *AESStr = aesEncrypt(contentStr);
     return @{@"header-encrypt-code":AESStr};
     
@@ -103,7 +103,7 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",URL_main,self.requestUrl]]];
     
     //加密header部分
-    NSString *headerContentStr = [[HeaderModel new] modelToJSONString];
+    NSString *headerContentStr = [[HeaderModel new] yy_modelToJSONString];
     NSString *headerAESStr = aesEncrypt(headerContentStr);
     [request setValue:headerAESStr forHTTPHeaderField:@"header-encrypt-code"];
     

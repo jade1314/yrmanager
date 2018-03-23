@@ -10,7 +10,9 @@
 #import "XLJSHandler.h"
 #import "HeaderModel.h"
 #import "AESCipher.h"
-#import <YYKit.h>
+
+
+
 
 @interface XLWebViewController () <WKNavigationDelegate>
 @property (nonatomic,strong) XLJSHandler * jsHandler;
@@ -34,7 +36,7 @@
         _url = url;
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_url]];
         //加密header部分
-        NSString *headerContentStr = [[HeaderModel new] modelToJSONString];
+        NSString *headerContentStr = [[HeaderModel new] yy_modelToJSONString];
         NSString *headerAESStr = aesEncrypt(headerContentStr);
         [request setValue:headerAESStr forHTTPHeaderField:@"header-encrypt-code"];
         [self.webView loadRequest:request];
@@ -84,7 +86,7 @@
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_url]];
     //加密header部分
-    NSString *headerContentStr = [[HeaderModel new] modelToJSONString];
+    NSString *headerContentStr = [[HeaderModel new] yy_modelToJSONString];
     NSString *headerAESStr = aesEncrypt(headerContentStr);
     [request setValue:headerAESStr forHTTPHeaderField:@"header-encrypt-code"];
     [_webView loadRequest:request];
