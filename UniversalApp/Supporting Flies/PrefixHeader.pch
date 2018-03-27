@@ -187,6 +187,10 @@
 #import <YYCache.h>
 #import <Toast.h>
 
+//基础网址
+#define BASEURL @"http://jerrysoft.com.cn:8008/service1.svc/"
+
+
 //弱引用/强引用  可配对引用在外面用MPWeakSelf(self)，block用MPStrongSelf(self)  也可以单独引用在外面用MPWeakSelf(self) block里面用weakself
 
 #define LMJWeakSelf(type)  __weak typeof(type) weak##type = type

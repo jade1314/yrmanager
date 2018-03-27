@@ -47,18 +47,18 @@
     NSDictionary *NavColor = @{@"titleText":@"10 - 改变导航栏颜色",@"clickSelector":@"changeNavBarColor"};
     NSDictionary *JSCore = @{@"titleText":@"11 - JS与Native交互",@"clickSelector":@"JSCallNative"};
     NSDictionary *scrollBanner = @{@"titleText":@"12 - 轮播图",@"clickSelector":@"scrollBanner"};
-    NSDictionary *baseAni = @{@"titleText":@"基础动画",@"clickSelector":@"customJump:"};
-    NSDictionary *bazirAni = @{@"titleText":@"关键帧动画",@"clickSelector":@"customJump:"};
-    NSDictionary *groupAni = @{@"titleText":@"组动画",@"clickSelector":@"customJump:"};
-    NSDictionary *transitionAni = @{@"titleText":@"过渡动画",@"clickSelector":@"customJump:"};
-    NSDictionary *fangsheAni = @{@"titleText":@"仿射变换",@"clickSelector":@"customJump:"};
-    NSDictionary *zhongheAni = @{@"titleText":@"综合案例",@"clickSelector":@"customJump:"};
+//    NSDictionary *baseAni = @{@"titleText":@"基础动画",@"clickSelector":@"customJump:"};
+//    NSDictionary *bazirAni = @{@"titleText":@"关键帧动画",@"clickSelector":@"customJump:"};
+//    NSDictionary *groupAni = @{@"titleText":@"组动画",@"clickSelector":@"customJump:"};
+//    NSDictionary *transitionAni = @{@"titleText":@"过渡动画",@"clickSelector":@"customJump:"};
+//    NSDictionary *fangsheAni = @{@"titleText":@"仿射变换",@"clickSelector":@"customJump:"};
+//    NSDictionary *zhongheAni = @{@"titleText":@"综合案例",@"clickSelector":@"customJump:"};
     
     
     
 
     
-    self.dataArray =@[tags,webView,emitterView,IAPPay,tabarBadge,share,alert,action,status,NavColor,JSCore,scrollBanner,baseAni,bazirAni,groupAni,transitionAni,fangsheAni,zhongheAni].mutableCopy;
+    self.dataArray =@[tags,webView,emitterView,IAPPay,tabarBadge,share,alert,action,status,NavColor,JSCore,scrollBanner/*,baseAni,bazirAni,groupAni,transitionAni,fangsheAni,zhongheAni*/].mutableCopy;
     
     [self initUI];
     

@@ -29,4 +29,7 @@ typedef NS_ENUM(NSInteger,UserGender){
 @property (nonatomic,copy) NSString * token;//用户登录后分配的登录Token
 @property (nonatomic, strong) GameInfo *info;//游戏数据
 
+
++ (UserInfo *)initData:(NSDictionary *)dict;
+
 @end

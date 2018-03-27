@@ -2335,4 +2335,13 @@ static void completionCallback(SystemSoundID sound_id, void* user_data){
     return [numberPre evaluateWithObject:textString];
 }
 
+//手机号正则
++(BOOL)validateMobile:(NSString *)mobile
+{//
+    NSString *phoneRegex = @"^1(3[0-9]|4[579]|5[0-35-9]|7[0135-8]|8[0-9])\\d{8}$";
+    //@"^1(3[0-9]|4[579]|5[0-35-9]|7[0135-8]|8[0-9])\\d{8}$";//11位 首字母1
+    NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
+    return [phoneTest evaluateWithObject:mobile];
+}
+
 @end

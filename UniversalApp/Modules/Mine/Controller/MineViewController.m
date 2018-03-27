@@ -14,34 +14,105 @@
 #import "XYTransitionProtocol.h"
 #import <CoreLocation/CoreLocation.h>
 #import "WXApiRequestHandler.h"
+#import "UUScoreListViewController.h"//积分列表
 
 #define KHeaderHeight ((260 * Iphone6ScaleWidth) + kStatusBarHeight)
 
 @interface MineViewController ()<UITableViewDelegate,UITableViewDataSource,headerViewDelegate,XYTransitionProtocol,CLLocationManagerDelegate,PKPaymentAuthorizationViewControllerDelegate>
 {
     UILabel * lbl;
-    NSArray *_dataSource;
+
     MineHeaderView *_headerView;//头部view
     UIView *_NavView;//导航栏
+    
 }
 @property (nonatomic, strong) CLLocationManager *locationManagerReplace;
+@property (nonatomic, strong) NSMutableArray    *scoreArr;;
 @end
 
 @implementation MineViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.isHidenNaviBar = YES;
-    self.StatusBarStyle = UIStatusBarStyleLightContent;
-    self.isShowLiftBack = NO;//每个根视图需要设置该属性为NO，否则会出现导航栏异常
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+
+//    self.StatusBarStyle = UIStatusBarStyleLightContent;
+//    self.isShowLiftBack = NO;//每个根视图需要设置该属性为NO，否则会出现导航栏异常
+    NSMutableArray *itemArr = [NSMutableArray new];
+   
+    LMJWordItem *myWalletItem = [LMJWordItem itemWithTitle:@"我的积分" subTitle:@"0" itemOperation:^(NSIndexPath *indexPath) {
+        //点击进入积分明细
+        if (_scoreArr.count > 0) {
+            UUScoreListViewController *scoreList = [UUScoreListViewController new];
+            scoreList.scoreData = _scoreArr;
+            [self.navigationController pushViewController:scoreList animated:YES];
+        }
+    }];
     
+    LMJWordItem *myPositionItem = [LMJWordItem itemWithTitle:@"我的位置" subTitle:@"100" itemOperation:^(NSIndexPath *indexPath) {
+         [self startLocationReplace];
+    }];
+    
+    LMJWordItem *myWXPayItem = [LMJWordItem itemWithTitle:@"微信支付" subTitle:@"0.01" itemOperation:^(NSIndexPath *indexPath) {
+        [WXApiRequestHandler jumpToBizPay];
+    }];
+    LMJWordItem *applePayItem = [LMJWordItem itemWithTitle:@"ApplePay" subTitle:@"0.01" itemOperation:^(NSIndexPath *indexPath) {
+        [self ApplePay];
+    }];
+    
+    [itemArr addObjectsFromArray:@[myWalletItem,myPositionItem,myWXPayItem,applePayItem]];
+    [self.sections addObject:[LMJItemSection sectionWithItems:itemArr andHeaderTitle:nil footerTitle:nil]];
+    [self.tableView reloadData];
+    UIBarButtonItem *rightConfigItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(changeUser)];
+    self.navigationItem.rightBarButtonItem = rightConfigItem;
     [self createUI];
-    
+}
+
+//获取积分
+- (void)getScore:(void(^)(NSString *scoreStr))scoreBlock{
+    NSString *scoreUrl = [BASEURL stringByAppendingString:[NSString stringWithFormat:@"VipPointsList/%@/%@",[defaults objectForKey:KCompanyCode],[defaults objectForKey:KUserData][@"Id"]]];
+    _scoreArr = [NSMutableArray new];
+    uWeakSelf
+    [[HttpRequest getInstance] postWithURLString:scoreUrl headers:nil orbYunType:OrbYunHttp parameters:nil success:^(id responseObject, NSURLSessionTask *task) {
+        NSString *compStr = [NSJSONSerialization JSONObjectWithData:responseObject
+                                                            options:NSJSONReadingAllowFragments
+                                                              error:nil];
+        NSData *data = [compStr dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSArray *compArr = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        
+        NSLog(@"%@",compArr);
+        weakSelf.scoreArr = compArr.mutableCopy;
+//        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options: error:nil];
+        scoreBlock([compArr[0][@"积分余额"] stringValue]);
+    } failure:^(NSError *error, NSURLSessionTask *task) {
+        
+    }];
+}
+
+- (void)createUI {
+    self.tableView.height = KScreenHeight - kTabBarHeight;
+    self.tableView.mj_header.hidden = YES;
+    self.tableView.mj_footer.hidden = YES;
+    _headerView = [[MineHeaderView alloc] initWithFrame:CGRectMake(0, -KHeaderHeight, KScreenWidth, KHeaderHeight)];
+    _headerView.delegate = self;
+    self.tableView.contentInset = UIEdgeInsetsMake(_headerView.height, 0, 0, 0);
+    [self.tableView addSubview:_headerView];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    //获取用户数据
     [self getRequset];
+     //获取会员积分
+    [self getScore:^(NSString *scoreStr) {
+        LMJItemSection *section = self.sections[0];
+        LMJWordItem *myPosition = section.items[0];
+        myPosition.subTitle = scoreStr;
+        [self.tableView reloadRow:0 inSection:0 withRowAnimation:UITableViewRowAnimationFade];
+    }];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
@@ -49,12 +120,15 @@
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:COLOR_BLUE] forBarMetrics:UIBarMetricsDefault];
     //    [self ysl_removeTransitionDelegate];
 }
 
 #pragma mark ————— 拉取数据 —————
 -(void)getRequset{
-    _headerView.userInfo = curUser;
+    NSDictionary *dict = [defaults objectForKey:KUserData];
+    UserInfo *info = [UserInfo initData:dict];
+    _headerView.userInfo = info;
 }
 
 #pragma mark ————— 头像被点击 —————
@@ -71,14 +145,7 @@
 }
 
 #pragma mark -- YSLTransitionAnimatorDataSource
-//-(UIImageView *)pushTransitionImageView{
-//    return _headerView.headImgView;
-//}
-//
-//- (UIImageView *)popTransitionImageView
-//{
-//    return nil;
-//}
+
 -(UIView *)targetTransitionView{
     return _headerView.headImgView;
 }
@@ -87,123 +154,17 @@
 }
 
 
-#pragma mark ————— 创建页面 —————
--(void)createUI{
-    self.tableView.height = KScreenHeight - kTabBarHeight;
-    self.tableView.mj_header.hidden = YES;
-    self.tableView.mj_footer.hidden = YES;
-    [self.tableView registerClass:[MineTableViewCell class] forCellReuseIdentifier:@"MineTableViewCell"];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    
-    _headerView = [[MineHeaderView alloc] initWithFrame:CGRectMake(0, -KHeaderHeight, KScreenWidth, KHeaderHeight)];
-    _headerView.delegate = self;
-    self.tableView.contentInset = UIEdgeInsetsMake(_headerView.height, 0, 0, 0);
-    [self.tableView addSubview:_headerView];
-    
-    
-    [self.view addSubview:self.tableView];
-    
-    [self createNav];
-    
-    NSDictionary *myWallet = @{@"titleText":@"我的钱包",@"clickSelector":@"",@"title_icon":@"qianb",@"detailText":@"10.00",@"arrow_icon":@"arrow_icon"};
-    NSDictionary *myMission = @{@"titleText":@"我的任务",@"clickSelector":@"",@"title_icon":@"renw",@"arrow_icon":@"arrow_icon"};
-    NSDictionary *myFriends = @{@"titleText":@"我的好友",@"clickSelector":@"",@"title_icon":@"haoy",@"arrow_icon":@"arrow_icon"};
-    NSDictionary *myLevel = @{@"titleText":@"我的等级",@"clickSelector":@"",@"title_icon":@"dengji",@"detailText":@"LV10",@"arrow_icon":@"arrow_icon"};
-    
-    NSDictionary *myPosition = @{@"titleText":@"我的位置",@"clickSelector":@"",@"title_icon":@"dengji",@"detailText":@"中国",@"arrow_icon":@"arrow_icon"};
-    
-    NSDictionary *myWXPay = @{@"titleText":@"WXPay",@"clickSelector":@"",@"title_icon":@"dengji",@"detailText":@"myWXPay",@"arrow_icon":@"arrow_icon"};
-    NSDictionary *applePay = @{@"titleText":@"applePay",@"clickSelector":@"",@"title_icon":@"dengji",@"detailText":@"applePay",@"arrow_icon":@"arrow_icon"};
-    
-    _dataSource = @[myWallet,myMission,myFriends,myLevel,myPosition,myWXPay,applePay];
-    [self.tableView reloadData];
-}
-#pragma mark ————— 创建自定义导航栏 —————
--(void)createNav{
-    _NavView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, kTopHeight)];
-    _NavView.backgroundColor = KClearColor;
-    
-    UILabel * titlelbl = [[UILabel alloc] initWithFrame:CGRectMake(0, kStatusBarHeight, KScreenWidth/2, kNavBarHeight )];
-    titlelbl.centerX = _NavView.width/2;
-    titlelbl.textAlignment = NSTextAlignmentCenter;
-    titlelbl.font= SYSTEMFONT(17);
-    titlelbl.textColor = KWhiteColor;
-    titlelbl.text = self.title;
-    [_NavView addSubview:titlelbl];
-    
-    UIButton * btn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [btn setTitle:@"设置" forState:UIControlStateNormal];
-    btn.titleLabel.font = SYSTEMFONT(16);
-    [btn setTitleColor:KWhiteColor forState:UIControlStateNormal];
-    [btn sizeToFit];
-    btn.frame = CGRectMake(_NavView.width - btn.width - 15, kStatusBarHeight, btn.width, 40);
-    [btn setTitleColor:KWhiteColor forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(changeUser) forControlEvents:UIControlEventTouchUpInside];
-    
-    [_NavView addSubview:btn];
-    
-    [self.view addSubview:_NavView];
+- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.1;
 }
 
-#pragma mark ————— tableview 代理 —————
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _dataSource.count;
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.1;
 }
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 50.0f;
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    MineTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MineTableViewCell" forIndexPath:indexPath];
-    cell.cellData = _dataSource[indexPath.row];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    return cell;
-}
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    switch (indexPath.row) {
-        case 0:
-            NSLog(@"点击了 我的钱包");
-            break;
-        case 1:
-            NSLog(@"点击了 我的任务");
-            break;
-        case 2:
-            NSLog(@"点击了 我的好友");
-            break;
-        case 3:
-            NSLog(@"点击了 我的等级");
-            break;
-        case 4:
-        {
-            NSLog(@"点击了 我的位置");
-            [self startLocationReplace];
-        }
-            break;
-        case 5:
-        {
-            NSLog(@"点击了 WXPay");
-             [WXApiRequestHandler jumpToBizPay];
-        }
-            break;
-        case 6:
-        {
-            NSLog(@"点击了 ApplePay");
-            [self ApplePay];
-        }
-            break;
-        default:
-            break;
-    }
-}
-
 
 
 - (void)ApplePay {
     PKPaymentRequest *request = [WXApiRequestHandler jumpToApplePay:self];
-    
     PKPaymentAuthorizationViewController *paymentPane = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
     if (paymentPane == nil) {
         NSLog(@"授权控制器创建失败");
@@ -302,9 +263,12 @@
             NSLog(@"++++%@",placemark.subLocality); //裕华区
             NSLog(@"country == %@",placemark.country);//中国
             NSLog(@"administrativeArea == %@",placemark.administrativeArea); //河北省
-            MineTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
+            LMJItemSection *section = self.sections[0];
             
-            cell.cellData = @{@"titleText":@"我的位置",@"clickSelector":@"",@"title_icon":@"dengji",@"detailText":[NSString stringWithFormat:@"%@",city],@"arrow_icon":@"arrow_icon"};
+            LMJWordItem *myPosition = section.items[1];
+            myPosition.subTitle = city;
+            [self.tableView reloadRow:1 inSection:0 withRowAnimation:UITableViewRowAnimationFade];
+            
             
         }
         else if (error == nil && [array count] == 0)

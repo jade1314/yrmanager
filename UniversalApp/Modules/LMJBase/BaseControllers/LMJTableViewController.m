@@ -31,7 +31,7 @@
         
         if ([self respondsToSelector:@selector(lmjNavigationHeight:)]) {
             
-            self.tableView.contentInset = UIEdgeInsetsMake([self lmjNavigationHeight:nil], 0, 0, 0);
+//            self.tableView.contentInset = UIEdgeInsetsMake([self lmjNavigationHeight:nil], 0, 0, 0);
         }
     }
     

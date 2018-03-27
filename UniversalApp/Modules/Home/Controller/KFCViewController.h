@@ -7,7 +7,8 @@
 //
 
 #import "RootViewController.h"
+#import "LMJStaticTableViewController.h"
 
-@interface KFCViewController : RootViewController
+@interface KFCViewController : LMJStaticTableViewController
 
 @end

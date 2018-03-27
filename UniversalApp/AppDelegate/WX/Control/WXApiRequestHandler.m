@@ -376,10 +376,10 @@
     request.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa, PKPaymentNetworkChinaUnionPay];
     
     // 2.5 支付请求包含一个支付摘要项目的列表
-    NSDecimalNumber *price1 = [NSDecimalNumber decimalNumberWithString:@"2"];
+    NSDecimalNumber *price1 = [NSDecimalNumber decimalNumberWithString:@"0.01"];
     PKPaymentSummaryItem *item1 = [PKPaymentSummaryItem summaryItemWithLabel:@"ssdjz1" amount:price1];
     
-    NSDecimalNumber *price2 = [NSDecimalNumber decimalNumberWithString:@"6"];
+    NSDecimalNumber *price2 = [NSDecimalNumber decimalNumberWithString:@"0.02"];
     PKPaymentSummaryItem *item2 = [PKPaymentSummaryItem summaryItemWithLabel:@"ssdjz2" amount:price2 type:PKPaymentSummaryItemTypePending];
     
     NSDecimalNumber *totalAmount = [NSDecimalNumber zero];
@@ -391,7 +391,7 @@
     
     
     // 2.6 运输方式
-    NSDecimalNumber *shippingPrice = [NSDecimalNumber decimalNumberWithString:@"1.0"];
+    NSDecimalNumber *shippingPrice = [NSDecimalNumber decimalNumberWithString:@"0.06"];
     PKShippingMethod *method = [PKShippingMethod summaryItemWithLabel:@"顺丰快递" amount:shippingPrice];
     method.detail = @"24小时送到！";
     method.identifier = @"shunfeng";

@@ -40,8 +40,8 @@
 {
     [super viewDidLayoutSubviews];
     
-    self.lmj_navgationBar.lmj_width = self.view.lmj_width;
-    [self.view bringSubviewToFront:self.lmj_navgationBar];
+//    self.lmj_navgationBar.lmj_width = self.view.lmj_width;
+//    [self.view bringSubviewToFront:self.lmj_navgationBar];
 }
 
 - (void)viewDidAppear:(BOOL)animated

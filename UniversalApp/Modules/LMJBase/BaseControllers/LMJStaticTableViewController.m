@@ -25,7 +25,8 @@ const UIEdgeInsets tableViewDefaultLayoutMargins = {8, 8, 8, 8};
     [super viewDidLoad];
     
     NSLog(@"self.tableView.separatorInset = %@, self.tableView.separatorInset = %@", NSStringFromUIEdgeInsets(self.tableView.separatorInset), NSStringFromUIEdgeInsets(self.tableView.layoutMargins));
-    
+    [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:@"Footer"];
+    [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:@"Header"];
 //    self.tableView.separatorInset = UIEdgeInsetsZero;
 //    self.tableView.layoutMargins = UIEdgeInsetsZero;
 }
@@ -117,6 +118,24 @@ const UIEdgeInsets tableViewDefaultLayoutMargins = {8, 8, 8, 8};
          [weakself.sections.firstObject.items addObject:item];
          return weakself;
     };
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    UITableViewHeaderFooterView *viewHd = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"Footer"];
+    if (!viewHd) {
+        viewHd = [[UITableViewHeaderFooterView alloc]initWithReuseIdentifier:@"Footer"];
+    }
+    viewHd.contentView.backgroundColor = COLOR_BACK;
+    return viewHd;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UITableViewHeaderFooterView *viewHd = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"Header"];
+    if (!viewHd) {
+        viewHd = [[UITableViewHeaderFooterView alloc]initWithReuseIdentifier:@"Header"];
+    }
+    viewHd.contentView.backgroundColor = COLOR_BACK;
+    return viewHd;
 }
 
 - (instancetype)init

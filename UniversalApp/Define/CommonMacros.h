@@ -27,7 +27,11 @@
 //用户model缓存
 #define KUserModelCache @"KUserModelCache"
 
+//登录信息存储
+#define KUserData @"KUserData"
 
+//Vip客户关联的公司
+#define KCompanyCode @"KCompanyCode"
 
 #pragma mark - ——————— 网络状态相关 ————————
 
