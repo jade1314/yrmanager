@@ -10,6 +10,7 @@
 #import <HMScannerController.h>
 #import <CoreLocation/CoreLocation.h>
 #import "UUSempleCollectionViewCell.h"
+#import "UUPersonalCollectionViewCell.h"
 
 @interface LMJElementsCollectionViewController ()<LMJElementsFlowLayoutDelegate,CLLocationManagerDelegate>{
     
@@ -19,7 +20,6 @@
     
 }
 @property (nonatomic, strong) NSMutableArray<NSValue *> *elementsHight;
-@property (nonatomic, strong) NSMutableArray<NSValue *> *elementsHightSecond;
 @property (nonatomic, strong) CLLocationManager *locationManagerReplace;
 
 @end
@@ -30,64 +30,83 @@
     [super viewDidLoad];
     
     self.title = @"";
-    [self.collectionView registerClass:[UUSempleCollectionViewCell class] forCellWithReuseIdentifier:@"UUSempleCollectionViewCell"];
+   
     
+    
+    [self.collectionView registerClass:[UUSempleCollectionViewCell class] forCellWithReuseIdentifier:@"UUSempleCollectionViewCell"];
+    self.collectionView.backgroundColor = COLOR_BACK;
     [self initButton:self.collectionView];
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    NSArray *testArr = @[@{@"image":@"timg",@"title":@"",@"size":[NSValue valueWithUIEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)]},@{@"image":@"icons8-add_row",@"title":@"仓库",@"size":[NSValue valueWithUIEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)]},@{@"image":@"icons8-add_rule",@"title":@"积分管理",@"size":[NSValue valueWithUIEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)]},@{@"image":@"icons8-add_shopping_cart",@"title":@"活动",@"size":[NSValue valueWithUIEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)]}];
     UUSempleCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([UUSempleCollectionViewCell class]) forIndexPath:indexPath];
-    cell.dataDict = @{@"image":@"trade_fund1",@"title":@"北京"};
+    
+    if (indexPath.item < 4) {
+        UUSempleCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([UUSempleCollectionViewCell class]) forIndexPath:indexPath];
+        cell.dataDict = testArr[indexPath.item];
+        return cell;
+    }else if (indexPath.item == 4) {
+        [self.collectionView registerNib:[UINib nibWithNibName:@"UUPersonalCollectionViewCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"UUPersonalCollectionViewCell"];
+        UUPersonalCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"UUPersonalCollectionViewCell" forIndexPath:indexPath];
+        
+        return cell;
+        
+    }
+    
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+//    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    NSArray *titleArr = @[@"头视图",@"仓库",@"积分管理",@"活动"];
+    [UIAlertController mj_showAlertWithTitle:titleArr[indexPath.item%4] message:@"正在开发中..." appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
+        
+        alertMaker.addActionDefaultTitle(@"确认");
+        
+    } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
+        
+    }];
     
     
-    NSLog(@"%zd", indexPath.item);
+//    NSLog(@"%zd", indexPath.item);
 }
 
 #pragma mark - LMJElementsFlowLayoutDelegate
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 100;
+    return 1;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if (section == 0) {
-        return self.elementsHightSecond.count;
-    }else{
-        return self.elementsHight.count;
-    }
+    
+    return self.elementsHight.count;
+    
 }
 
 - (CGSize)waterflowLayout:(LMJElementsFlowLayout *)waterflowLayout collectionView:(UICollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        return self.elementsHightSecond[indexPath.item].CGSizeValue;
-    }
     return self.elementsHight[indexPath.item].CGSizeValue;
 }
 
 - (UIEdgeInsets)waterflowLayout:(LMJElementsFlowLayout *)waterflowLayout edgeInsetsInCollectionView:(UICollectionView *)collectionView{
-   
-    return UIEdgeInsetsMake(0, 10, 10, 10);
+    
+    return UIEdgeInsetsMake(0, 0, 0, 0);
     
 }
 
 - (CGFloat)waterflowLayout:(LMJElementsFlowLayout *)waterflowLayout collectionView:(UICollectionView *)collectionView linesMarginForItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        return 0.1;
+    if (indexPath.item < 5) {
+        return 1;
     }
-    return 10;
+    return 0.1;
 }
 
 - (CGFloat)waterflowLayout:(LMJElementsFlowLayout *)waterflowLayout collectionView:(UICollectionView *)collectionView columnsMarginForItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        return 0.1;
+    if (indexPath.item < 5) {
+        return 1;
     }
-    return 10;
+    return 0.1;
 }
 
 #pragma mark - LMJCollectionViewControllerDataSource
@@ -136,47 +155,58 @@
 /** 右边的按钮的点击 */
 -(void)rightButtonEvent:(UIButton *)sender navigationBar:(LMJNavigationBar *)navigationBar
 {
-//    [self.elementsHight replaceObjectAtIndex:0 withObject:[NSValue valueWithCGSize:CGSizeMake(([UIScreen mainScreen].bounds.size.width - 30) * 0.5, 44)]];
-//
-//    [self.collectionView reloadData];
+    //    [self.elementsHight replaceObjectAtIndex:0 withObject:[NSValue valueWithCGSize:CGSizeMake(([UIScreen mainScreen].bounds.size.width - 30) * 0.5, 44)]];
+    //
+    //    [self.collectionView reloadData];
 }
 
 
 - (NSMutableArray<NSValue *> *)elementsHight{
     if(_elementsHight == nil){
         _elementsHight = [NSMutableArray array];
+         [_elementsHight addObject:[NSValue valueWithCGSize:CGSizeMake(kScreenWidth, 100)]];
         for (int i = 0; i < 3; i ++) {
-            [_elementsHight addObject:[NSValue valueWithCGSize:CGSizeMake((kScreenWidth - 40)/3, (kScreenWidth - 40)/3)]];
+            [_elementsHight addObject:[NSValue valueWithCGSize:CGSizeMake((kScreenWidth - 4)/3, (kScreenWidth - 4)/3)]];
         }
+        
+        [_elementsHight addObject:[NSValue valueWithCGSize:CGSizeMake(kScreenWidth, 200)]];
+        for (int i = 0; i < 5; i ++) {
+            [_elementsHight addObject:[NSValue valueWithCGSize:CGSizeMake(kScreenWidth, 50)]];
+        }
+        [_elementsHight addObject:[NSValue valueWithCGSize:CGSizeMake(kScreenWidth, 30)]];
+        for (int i = 0; i < 5; i ++) {
+            [_elementsHight addObject:[NSValue valueWithCGSize:CGSizeMake(kScreenWidth, 50)]];
+        }
+        [_elementsHight addObject:[NSValue valueWithCGSize:CGSizeMake(kScreenWidth, 30)]];
+        for (int i = 0; i < 5; i ++) {
+            [_elementsHight addObject:[NSValue valueWithCGSize:CGSizeMake(kScreenWidth, 50)]];
+        }
+        
     }
     return _elementsHight;
 }
 
-- (NSMutableArray<NSValue *> *)elementsHightSecond {
-    if(_elementsHightSecond == nil){
-        _elementsHightSecond = [NSMutableArray array];
-        [_elementsHightSecond addObject:[NSValue valueWithCGSize:CGSizeMake(kScreenWidth, 100)]];
-    }
-    return _elementsHightSecond;
-}
-
 - (void) initButton:(UIView *)cellBackView {//
-    _loctionBtn = [self btnWithFrame:CGRectMake(0, 40, KScreenWidth/3, 30) imageName:@"hangqing" selector:@selector(startLocationReplace)];
+    _loctionBtn = [self btnWithFrame:CGRectMake(0, 40, KScreenWidth/3, 30) imageName:@"icons8-previous__location" selector:@selector(startLocationReplace)];
+    [_loctionBtn setTitle:@"点击定位" forState:UIControlStateNormal];
     _loctionBtn.tag = 101;
     [cellBackView addSubview:_loctionBtn];
     
-    _qrcBtn = [self btnWithFrame:CGRectMake(KScreenWidth - 50, 40, 50, 30) imageName:@"closeblue" selector:@selector(qrCodeBtnClicked)];
+    
+    _moreBtn = [self btnWithFrame:CGRectMake(KScreenWidth - 100, 40, 50, 30) imageName:@"icons8-read_message" selector:@selector(moreBtnClicked)];
+    [cellBackView addSubview:_moreBtn];
+    
+    _qrcBtn = [self btnWithFrame:CGRectMake(KScreenWidth - 50, 40, 50, 30) imageName:@"icons8-more" selector:@selector(qrCodeBtnClicked)];
     [cellBackView addSubview:_qrcBtn];
     
-    _moreBtn = [self btnWithFrame:CGRectMake(KScreenWidth - 100, 40, 50, 30) imageName:@"search" selector:@selector(moreBtnClicked)];
-    [cellBackView addSubview:_moreBtn];
+    
     
 }
 
 - (UIButton *)btnWithFrame:(CGRect)rect imageName:(NSString *)name selector:(SEL)sel {
     UIButton * btn = [[UIButton alloc]initWithFrame:rect];
     [btn setImage:[UIImage imageNamed:name] forState:UIControlStateNormal];
-    [btn setTitleColor:COLOR_BLUE forState:UIControlStateNormal];
+    [btn setTitleColor:COLOR_DARKBLACK forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont systemFontOfSize:13];
     [btn addTarget:self action:sel forControlEvents:UIControlEventTouchUpInside];
     return btn;
@@ -274,3 +304,4 @@
 
 
 @end
+

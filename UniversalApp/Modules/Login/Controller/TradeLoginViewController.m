@@ -83,7 +83,7 @@
         OUTIP = str;
     } failure:nil];
     
-    self.title = @"交易登录";
+    self.title = @"登录";
     
     heightFree = 0;
     [self.view addSubview:self.certainButton];
@@ -182,7 +182,7 @@
 
         return;
     }
-    if (passwordTF.text.length < 6) {
+    if (passwordTF.text.length < 1) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [UIAlertController mj_showAlertWithTitle:@"请输入正确的密码" message:@"I am sorry!" appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
 
@@ -194,9 +194,9 @@
         });
 
         return ;//[NSString stringWithFormat:@"VipLogin/%@/%@/%@",_item.subTitle,accountTF.text,passwordTF.text]
-    }//
+    }//@"VipLogin/s0166/18971091245/123"
     [defaults setObject:_item.subTitle forKey:KCompanyCode];
-    [[HttpRequest getInstance] postWithURLString:[BASEURL stringByAppendingString:@"VipLogin/s0166/18971091245/123"] headers:nil orbYunType:OrbYunHttp parameters:nil success:^(id responseObject, NSURLSessionTask *task) {
+    [[HttpRequest getInstance] postWithURLString:[BASEURL stringByAppendingString:[NSString stringWithFormat:@"VipLogin/%@/%@/%@",_item.subTitle,accountTF.text,passwordTF.text]] headers:nil orbYunType:OrbYunHttp parameters:nil success:^(id responseObject, NSURLSessionTask *task) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:3 error:nil];
         NSLog(@"%@",dict);
         [defaults setObject:dict forKey:KUserData];
@@ -329,7 +329,7 @@
     //获取尺寸
     CGSize codeSize=[ToolHelper sizeForNoticeTitle:@"更换资金账号" font:[UIFont boldSystemFontOfSize:15]];
     //图标集
-    NSArray *imageArray=@[@"consumer",@"secret",@"identifyingcode",@"secretblue"];
+    NSArray *imageArray=@[@"icons8-merchant_account",@"icons8-equity_security",@"identifyingcode",@"secretblue"];
     //创建地板
     bottomFieldView = [[UIView alloc] initWithFrame:CGRectMake(0,30,kScreenWidth,180)];
     [self.view addSubview:bottomFieldView];

@@ -134,9 +134,16 @@
 #pragma mark ————— 头像被点击 —————
 -(void)headerViewClick{
     //    [self ysl_addTransitionDelegate:self];
-    ProfileViewController *profileVC = [ProfileViewController new];
-    profileVC.headerImage = _headerView.headImgView.image;
-    [self.navigationController pushViewController:profileVC animated:YES];
+//    ProfileViewController *profileVC = [ProfileViewController new];
+//    profileVC.headerImage = _headerView.headImgView.image;
+//    [self.navigationController pushViewController:profileVC animated:YES];
+    [UIAlertController mj_showAlertWithTitle:@"点击头像" message:@"正在开发中..." appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
+        
+        alertMaker.addActionDefaultTitle(@"确认");
+        
+    } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
+        
+    }];
 }
 
 #pragma mark ————— 昵称被点击 —————

@@ -128,6 +128,14 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     HSBaseCellModel *model = _dataArray[indexPath.section][indexPath.row];
     NSLog(@"点击了 %@",model.title);
+    
+    [UIAlertController mj_showAlertWithTitle:[NSString stringWithFormat:@"点击了 %@",model.title] message:@"正在开发中..." appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
+        
+        alertMaker.addActionDefaultTitle(@"确认");
+        
+    } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
+        
+    }];
 //    switch (indexPath.row) {
 //        case 9000:
 //        {
