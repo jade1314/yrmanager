@@ -2335,13 +2335,34 @@ static void completionCallback(SystemSoundID sound_id, void* user_data){
     return [numberPre evaluateWithObject:textString];
 }
 
+
+
 //手机号正则
 +(BOOL)validateMobile:(NSString *)mobile
 {//
-    NSString *phoneRegex = @"^1(3[0-9]|4[579]|5[0-35-9]|7[0135-8]|8[0-9])\\d{8}$";
+    NSString *phoneRegex = @"^1(3|4|5|7|8)\\d{9}$";
+    //@"^1(3[0-9]|4[579]|5[0-35-9]|7[0135-8]|8[0-9])\\d{8}$"
     //@"^1(3[0-9]|4[579]|5[0-35-9]|7[0135-8]|8[0-9])\\d{8}$";//11位 首字母1
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:mobile];
+}
+
+//座机正则
++(BOOL)validatePhone:(NSString *)Phone
+{//
+    NSString *phoneRegex = @"^((0\\d{2,3}-\\d{7,8})|(1[3584]\\d{9}))$";
+    
+    NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
+    return [phoneTest evaluateWithObject:Phone];
+}
+
+//座机正则
++(BOOL)validatePhoneNone:(NSString *)Phone
+{//
+    NSString *phoneRegex = @"^((0\\d{2,3}\\d{7,8})|(1[3584]\\d{9}))$";
+    
+    NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
+    return [phoneTest evaluateWithObject:Phone];
 }
 
 @end

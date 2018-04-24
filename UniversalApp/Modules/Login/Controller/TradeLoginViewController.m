@@ -7,37 +7,20 @@
 //
 
 #import "TradeLoginViewController.h"
-
-#import "UIView+TYAlertView.h"
 #import "HttpRequest.h"
-#import "UsersModel.h"
-#import "OpenUDID.h"
-#import <sys/utsname.h>
-#import "RegisterLoginViewController.h"
-#import "TradeLoginStartViewController.h"
-#import "GetIpHelper.h"
-#import "ReplaceCell.h"
 #import "UUCompanyListViewController.h"
 #import <MOFSPickerManager.h>//提示框
 
-#define multiple  kScreenHeight/667 //倍数
-#define multiple_w  kScreenWidth/375 //倍数
-#define messageVerifyTime   @"120"
-#define voiceVerifyTime     @"120"
+#define messageVerifyTime   6
 
-@interface TradeLoginViewController () <UITextFieldDelegate, UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate>{
+@interface TradeLoginViewController () <UITextFieldDelegate, UIAlertViewDelegate>{
     BOOL isScect;
     BOOL res;
     CGFloat heightFree;//iphone4 上移输入框
     UIView *bottomFieldView;//底板
-    NSInteger lengthNum;
-    NSString *clickLogin;//客服热线  防止误触
-    NSInteger clickReplaceNum;//保证只跳一次更换资金账号 防止误触
-    NSString *OUTIP;
-    BOOL isClose;//下拉列表的收缩状态
-    BOOL    isFirst;
-    
     LMJWordItem *_item;//选择的会员公司
+    NSInteger timerNum;//计时时间
+    NSString *_verificationStr;//短信验证码
     
 }
 @property (nonatomic, strong) UIButton *certainButton;
@@ -59,60 +42,30 @@
 //如果密码为空 重新获取一次
 -(NSString *)selectStr{
     if ([ToolHelper isBlankString:_selectStr] ) {
-       
         UITextField *te = [self.view viewWithTag:100301];
         _selectStr = te.text;
     }
     return _selectStr;
 }
 
--(void)didClickOKbutton{
-    NSLog(@"ok");
-}
--(void)didClickHideButton{
-    NSLog(@"hide");
-}
-
-
 #pragma mark LifeCycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    isFirst = YES;
-    OUTIP = @"";
-    [GetIpHelper urlRequestOperation:^(NSString *str) {
-        OUTIP = str;
-    } failure:nil];
-    
-    self.title = @"登录";
-    
+    self.title = _isLostPassword ? @"忘记密码" : @"登录";
+    timerNum = messageVerifyTime;
     heightFree = 0;
     [self.view addSubview:self.certainButton];
     [self createTextFieldThree];
 }
 
-//收起键盘
--(void)hideKeyboard:(NSInteger)num{
-    if (num == 0) {
-        
-        [self.view endEditing:YES];
-    }else if(num == 1){
-        
-    }else if (num == 2){
-        [self.view endEditing:YES];
-    }
-}
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
     [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageWithColor:COLOR_BLUE] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.titleTextAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:18],NSForegroundColorAttributeName:[UIColor whiteColor]};
     //初始化数据
-    clickReplaceNum = 0;
-    clickLogin = @"0";
-    
     [self hideKeyboard:0];
-    
+
     //检测 APP 合法性, 配置加密键盘
     NSString *fundStr = @"";
     if (![ToolHelper isBlankString:fundStr]) {
@@ -120,17 +73,15 @@
         fundCodeField.text=fundStr;
         _fundCode=fundStr;
     }
-    [self requestImagePhotoIdentify];//验证码图片
     
-    [self whetherUnsafeLogin:^{
-        [self getPlugincomponents];
-    }];
-    
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldLoginDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+    if (_isLostPassword) {
+        UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(backViewController)];
+        self.navigationItem.leftBarButtonItem = item;
+    }
+}
+
+- (void) backViewController {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -143,80 +94,70 @@
     }
 }
 
-#pragma mark 点击验证码图片刷新验证码
-- (void)identifyImageClick:(UITapGestureRecognizer *)tap{
-    [self requestImagePhotoIdentify];//验证码图片
-}
-
 #pragma mark 登录按钮
 - (void)buttonTradeClick {
 
-    if (_item.subTitle.length < 1) {
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [UIAlertController mj_showAlertWithTitle:@"请选择会员公司1" message:@"I am sorry!" appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
-
-                alertMaker.addActionDefaultTitle(@"确认");
-
-            } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
-
-            }];
-        });
-
-        return;
-    }
+    if (![self companyCodeExist]) return;
+    if (![self mobileNumExist]) return;
 
     UITextField *accountTF = [self.view viewWithTag:100300];
-    UITextField *passwordTF = [self.view viewWithTag:100301];
-    if (accountTF.text.length < 6) {
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [UIAlertController mj_showAlertWithTitle:@"请输入正确格式的手机号码" message:@"I am sorry!" appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
-
-            alertMaker.addActionDefaultTitle(@"确认");
-
-        } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
-
-        }];
-    });
-
-        return;
+    UITextField *passwordTFandverification = [self.view viewWithTag:100301];
+//    UITextField *verificationTF = [self.view viewWithTag:100302];
+    
+    if (_isLostPassword) {
+        if (![_verificationStr isEqualToString:passwordTFandverification.text]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIAlertController mj_showAlertWithTitle:@"请输入正确的短信验证码" message:@"I am sorry!" appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
+                    alertMaker.addActionDefaultTitle(@"确认");
+                    
+                } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
+                    
+                }];
+            });
+            
+            return ;
+        } else {
+            KPostNotification(KNotificationLoginStateChange, @YES);
+            return;
+        }
+    } else {
+        if (passwordTFandverification.text.length < 1) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIAlertController mj_showAlertWithTitle:@"请输入正确的密码" message:@"I am sorry!" appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
+                    alertMaker.addActionDefaultTitle(@"确认");
+                    
+                } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
+                    
+                }];
+            });
+            
+            return ;
+        }
     }
-    if (passwordTF.text.length < 1) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [UIAlertController mj_showAlertWithTitle:@"请输入正确的密码" message:@"I am sorry!" appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
-
-                alertMaker.addActionDefaultTitle(@"确认");
-
-            } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
-
-            }];
-        });
-
-        return ;//[NSString stringWithFormat:@"VipLogin/%@/%@/%@",_item.subTitle,accountTF.text,passwordTF.text]
-    }//@"VipLogin/s0166/18971091245/123"
-    [defaults setObject:_item.subTitle forKey:KCompanyCode];
-    [[HttpRequest getInstance] postWithURLString:[BASEURL stringByAppendingString:[NSString stringWithFormat:@"VipLogin/%@/%@/%@",_item.subTitle,accountTF.text,passwordTF.text]] headers:nil orbYunType:OrbYunHttp parameters:nil success:^(id responseObject, NSURLSessionTask *task) {
+    
+    //[NSString stringWithFormat:@"VipLogin/%@/%@/%@",_item.subTitle,accountTF.text,passwordTF.text]
+    //@"VipLogin/s0166/18971091245/123"
+    [[HttpRequest getInstance] postWithURLString:[BASEURL stringByAppendingString:[NSString stringWithFormat:@"VipLogin/%@/%@/%@",_item.subTitle,accountTF.text,passwordTFandverification.text]] headers:nil orbYunType:OrbYunHttp parameters:nil success:^(id responseObject, NSURLSessionTask *task) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:3 error:nil];
         NSLog(@"%@",dict);
-        [defaults setObject:dict forKey:KUserData];
-        KPostNotification(KNotificationLoginStateChange, @YES);
+        if ([dict[@"Id"] length] > 0) {
+            [defaults setObject:dict forKey:KUserData];
+            KPostNotification(KNotificationLoginStateChange, @YES);
+        }else{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIAlertController mj_showAlertWithTitle:dict[@"ErrMsg"] message:@"I am sorry!" appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
+                    alertMaker.addActionDefaultTitle(@"确认");
+                    
+                } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
+                    
+                }];
+            });
+        }
+       
+        
     } failure:^(NSError *error, NSURLSessionTask *task) {
         NSLog(@"%@",[error localizedDescription]);
-        KPostNotification(KNotificationLoginStateChange, @YES);
     }];
-    
-}
-
-//跳转
--(void)transactionAccountToken:(NSString *)tokenString old_SRRC:(NSString *)srrc old_TCC:(NSString *)tcc isOverdue:(NSString *)isOverdue endDate:(NSString *)endDate riskLevel:(NSString *)riskLevel {
-    
-    
-    
-}
-
-// http 请求是否允许使用明文
-- (void)whetherUnsafeLogin:(void(^)(void))getBlock {
     
 }
 
@@ -247,24 +188,6 @@
     }
 }
 
-- (void)keyboardWillShow:(NSNotification *)aNotification {
-    //获取键盘的高度
-    NSDictionary *userInfo = [aNotification userInfo];
-    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGRect keyboardRect = [aValue CGRectValue];
-    
-    heightFree=kScreenHeight-keyboardRect.size.height;
-    
-    
-}
-
-- (void)keyboardWillHide:(NSNotification *)aNotification{
-    
-    if (bottomFieldView.top == -60) {
-        bottomFieldView.top = 30;
-    }
-}
-
 #pragma mark Lazy
 - (void)alertShowWithView:(UIView *)alertView style:(TYAlertControllerStyle)style  {
     self.alertController = [TYAlertController alertControllerWithAlertView:alertView preferredStyle:style];
@@ -278,50 +201,58 @@
     compList.compB = ^(LMJWordItem *item) {
         self.title = item.title;
         _item = item;
+        [defaults setObject:_item.subTitle forKey:KCompanyCode];
     };
     [self.navigationController pushViewController:compList animated:YES];
-}
-
-
-#pragma mark 验证码图片
-- (void)requestImagePhotoIdentify {
-}
-
-#pragma mark 获取插件  用这个方法来确定使用明文密文（服务器）
--(void)getPlugincomponents {
 }
 
 //懒加载
 - (UIButton *)certainButton {
     if (!_certainButton) {
-        _certainButton = [[UIButton alloc] initWithFrame:CGRectMake(23, 180+30+32+97*multiple, kScreenWidth-46, 40)];
+        _certainButton = [[UIButton alloc] initWithFrame:CGRectMake(23, 180+30+32+97, kScreenWidth-46, 40)];
         _certainButton.backgroundColor=COLOR_YELLOW;
         _certainButton.layer.cornerRadius=5;
         _certainButton.layer.masksToBounds=YES;
-        [_certainButton setTitle:@"确 定" forState:UIControlStateNormal];
+        [_certainButton setTitle:_isLostPassword ? @"确定验证码" : @"确 定" forState:UIControlStateNormal];
         [_certainButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _certainButton.titleLabel.font=[UIFont systemFontOfSize:15];
         [_certainButton addTarget:self action:@selector(buttonTradeClick) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_certainButton];
-        
-        
-        CGSize forgetPasswordSize=[ToolHelper sizeForNoticeTitle:@"选择公司" font:[UIFont systemFontOfSize:14]];
-        UIButton *selectC=[[UIButton alloc] initWithFrame:CGRectMake(_certainButton.left, _certainButton.bottom + 10, forgetPasswordSize.width+2*KSINGLELINE_WIDTH, 20)];
+        //选择公司
+        CGSize selectCompany=[ToolHelper sizeForNoticeTitle:@"选择公司" font:[UIFont systemFontOfSize:14]];
+        UIButton *selectC=[[UIButton alloc] initWithFrame:CGRectMake(_certainButton.left, _certainButton.bottom + 10, selectCompany.width+2*KSINGLELINE_WIDTH, 20)];
         selectC.tag = 999000;
         [selectC setTitle:@"选择公司" forState:UIControlStateNormal];
         selectC.titleLabel.font=[UIFont systemFontOfSize:14];
         [selectC setTitleColor:COLOR_LIGHTGRAY forState:UIControlStateNormal];
         [selectC addTarget:self action:@selector(selectCompany) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:selectC];
-        
+        //忘记密码
+        if (!_isLostPassword) {
+            CGSize forgetPasswordSize=[ToolHelper sizeForNoticeTitle:@"忘记密码" font:[UIFont systemFontOfSize:14]];
+            UIButton *forgetBnt=[[UIButton alloc] initWithFrame:CGRectMake(0, _certainButton.bottom + 10, forgetPasswordSize.width+2*KSINGLELINE_WIDTH, 20)];
+            forgetBnt.right = _certainButton.right;
+            forgetBnt.tag = 999000;
+            [forgetBnt setTitle:@"忘记密码" forState:UIControlStateNormal];
+            forgetBnt.titleLabel.font=[UIFont systemFontOfSize:14];
+            [forgetBnt setTitleColor:COLOR_LIGHTGRAY forState:UIControlStateNormal];
+            [forgetBnt addTarget:self action:@selector(forgetPassword) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:forgetBnt];
+        }
     }
     return _certainButton;
+}
+//忘记密码
+- (void) forgetPassword {
+    TradeLoginViewController *lostPasswordV = [[TradeLoginViewController alloc]init];
+    lostPasswordV.isLostPassword = YES;
+    [self.navigationController pushViewController:lostPasswordV animated:YES];
+    
 }
 
 #pragma mark 屏幕点击手势
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [self hideKeyboard:0];//收起键盘
-    isClose=NO;
 }
 
 #pragma mark 创建3个textField框
@@ -329,7 +260,7 @@
     //获取尺寸
     CGSize codeSize=[ToolHelper sizeForNoticeTitle:@"更换资金账号" font:[UIFont boldSystemFontOfSize:15]];
     //图标集
-    NSArray *imageArray=@[@"icons8-merchant_account",@"icons8-equity_security",@"identifyingcode",@"secretblue"];
+    NSArray *imageArray=@[@"icons8-merchant_account",@"icons8-equity_security",@"icons8-equity_security",@"secretblue"];
     //创建地板
     bottomFieldView = [[UIView alloc] initWithFrame:CGRectMake(0,30,kScreenWidth,180)];
     [self.view addSubview:bottomFieldView];
@@ -339,9 +270,8 @@
         fundView.backgroundColor=[UIColor whiteColor];
         [bottomFieldView addSubview:fundView];
         
-       
         UIView *lineView=[[UIView alloc] init];
-        if (i==2) {
+        if (i==1) {
             lineView.frame=CGRectMake(0, 60-KSINGLELINE_WIDTH, kScreenWidth, KSINGLELINE_WIDTH);
         }else{
             lineView.frame=CGRectMake(20, 60-KSINGLELINE_WIDTH, kScreenWidth-20, KSINGLELINE_WIDTH);
@@ -356,11 +286,15 @@
             LeftButton.frame=CGRectMake(20, (60-21)/2, 19, 21);
             LeftButton.userInteractionEnabled=NO;
         }else if (i==1){
-            LeftButton.frame=CGRectMake(20, (60-21)/2, 18, 21);
-            LeftButton.userInteractionEnabled=NO;
+            if (_isLostPassword) {
+                LeftButton.userInteractionEnabled=NO;
+                LeftButton.frame=CGRectMake(20, (60-21)/2, 21, 21);
+            } else {
+                LeftButton.frame=CGRectMake(20, (60-21)/2, 18, 21);
+                LeftButton.userInteractionEnabled=NO;
+            }
         }else if (i==2){
-            LeftButton.userInteractionEnabled=NO;
-            LeftButton.frame=CGRectMake(20, (60-21)/2, 21, 21);
+           
         }
         [fundView addSubview:LeftButton];
         
@@ -373,16 +307,20 @@
             numberField.secureTextEntry=NO;//默认密文
             numberField.keyboardType = UIKeyboardTypeNumberPad;
         }else if(i==1){
-            numberField.clearButtonMode = UITextFieldViewModeNever;
-            numberField.secureTextEntry = YES;
-            numberField.placeholder=@"请输入密码";
-            numberField.keyboardType = UIKeyboardTypeEmailAddress;
+            if (_isLostPassword) {
+                numberField.clearButtonMode=UITextFieldViewModeWhileEditing;
+                numberField.placeholder=@"请输入验证码";
+            } else {
+                numberField.clearButtonMode = UITextFieldViewModeNever;
+                numberField.secureTextEntry = YES;
+                numberField.placeholder=@"请输入密码";
+                numberField.keyboardType = UIKeyboardTypeEmailAddress;
+            }
+            
         }else if (i==2){
-            numberField.clearButtonMode=UITextFieldViewModeWhileEditing;
-            numberField.placeholder=@"请输入验证码";
+            
         }
         
-       
         numberField.tintColor=COLOR_BLUE;
         numberField.tag=100300+i;
         numberField.delegate = self;
@@ -408,17 +346,117 @@
                 make.size.mas_equalTo(CGSizeMake(kScreenWidth - 54 - 140 - 10, 60));
             }
         }];
+        if (_isLostPassword && i == 1) {
+            uWeakSelf
+            UIButton *sendMsg = [[UIButton alloc]initWithFrame:CGRectMake(KScreenWidth - 100, 0, 100, 60) buttonTitle:@"短信验证码" normalBGColor:COLOR_GREEN selectBGColor:COLOR_BLUE normalColor:COLOR_DARKGREY selectColor:COLOR_DARKGREY buttonFont:[UIFont systemFontOfSize:12] cornerRadius:5 doneBlock:^(UIButton *sender) {
+                [weakSelf sendMsgVerification:sender];
+                
+            }];
+            [fundView addSubview:sendMsg];
+        }
+    }
+}
+//验证公司
+- (BOOL)companyCodeExist {
+    //验证所属公司是否选择
+    if (_item.subTitle.length < 1) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UIAlertController mj_showAlertWithTitle:@"请选择会员公司1" message:@"I am sorry!" appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
+                alertMaker.addActionDefaultTitle(@"确认");
+                
+            } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
+                
+            }];
+        });
+        
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)mobileNumExist {
+    UITextField *accountTF = [self.view viewWithTag:100300];
+    if (accountTF.text.length < 6) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UIAlertController mj_showAlertWithTitle:@"请输入正确格式的手机号码" message:@"I am sorry!" appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
+                alertMaker.addActionDefaultTitle(@"确认");
+                
+            } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
+                
+            }];
+        });
+        return NO;
+    }
+    return YES;
+}
+
+- (void) sendMsgVerification:(UIButton *)sender {
+    UITextField *accountTF = [self.view viewWithTag:100300];
+    //验证所属公司是否选择
+    if (![self companyCodeExist]) return;
+    if (![self mobileNumExist]) return;
+     //调用发送短信验证码接口************ChkVipTele/公司编号/手机号
+    [[HttpRequest getInstance] postWithURLString:[BASEURL stringByAppendingString:[NSString stringWithFormat:@"ChkVipTele/%@/%@",[defaults objectForKey:KCompanyCode],accountTF.text]] headers:nil orbYunType:OrbYunHttp parameters:nil success:^(id responseObject, NSURLSessionTask *task) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:3 error:nil];
+        [defaults setObject:dict forKey:KUserData];
+        NSLog(@"%@",dict);
+        sender.enabled = NO;
+        sender.userInteractionEnabled = NO;
+        if ([dict[@"Id"] length] > 0) {
+            //按钮计时
+            _verificationStr = dict[@"Code"];
+            [self buttonTimer:sender];
+        }else{
+            sender.enabled = YES;
+            sender.userInteractionEnabled = YES;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIAlertController mj_showAlertWithTitle:dict[@"ErrMsg"] message:@"I am sorry!" appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
+                    alertMaker.addActionDefaultTitle(@"确认");
+                    
+                } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
+                    
+                }];
+            });
+        }
+       
+    } failure:^(NSError *error, NSURLSessionTask *task) {
+        NSLog(@"%@",[error localizedDescription]);
+        [sender setTitle:@"NO网络，重试" forState:UIControlStateNormal];
+        
+    }];
+    
+}
+//按钮计时
+- (void) buttonTimer:(UIButton *) sender  {
+    //按钮计时
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 block:^(NSTimer * _Nonnull timer) {
+        timerNum -= 1;
+        if (timerNum < 1) {
+            timerNum = 6;
+            sender.enabled = YES;
+            sender.userInteractionEnabled = YES;
+            [sender setTitle:@"短信验证码" forState:UIControlStateNormal];
+            [timer invalidate];
+            timer = nil;
+            return;
+        }
+        [sender setTitle:[NSString stringWithFormat:@"剩余%@s",[@(timerNum) stringValue]]forState:UIControlStateNormal];
+    } repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+}
+
+//收起键盘
+-(void)hideKeyboard:(NSInteger)num{
+    if (num == 0) {
+        [self.view endEditing:YES];
+    }else if(num == 1){
+        
+    }else if (num == 2){
+        [self.view endEditing:YES];
     }
 }
 
-#pragma mark rightAction
-- (void)rightAction {
-    
-}
-
-- (void)controlUserInteraction:(BOOL)isEnabled {
-    
-}
 
 @end
 

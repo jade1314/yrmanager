@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UniversalApp/Modules/Mine/Controller/MineViewController.m"
-            timestampString = "544688500.637205"
+            timestampString = "546253532.268158"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
             landmarkName = "-viewDidLoad"
             landmarkType = "7">
          </BreakpointContent>
@@ -52,27 +52,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UniversalApp/Modules/Mine/Controller/MineViewController.m"
-            timestampString = "544688500.637763"
+            timestampString = "546253532.268494"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
-            landmarkName = "-getScore:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "UniversalApp/Modules/Mine/Controller/MineViewController.m"
-            timestampString = "544688500.6379811"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "113"
-            endingLineNumber = "113"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
             landmarkName = "-viewWillAppear:"
             landmarkType = "7">
          </BreakpointContent>
@@ -84,11 +68,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UniversalApp/Modules/Mine/Controller/MineViewController.m"
-            timestampString = "544688500.638189"
+            timestampString = "546253532.268731"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
             landmarkName = "-getScore:"
             landmarkType = "7">
          </BreakpointContent>
@@ -96,15 +80,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UniversalApp/Modules/Mine/Controller/MineViewController.m"
-            timestampString = "544688500.638389"
+            timestampString = "546253532.2689559"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
             landmarkName = "-getScore:"
             landmarkType = "7">
          </BreakpointContent>
@@ -116,11 +100,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
-            timestampString = "544859973.318439"
+            timestampString = "545814315.985497"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
             landmarkName = "-buttonTradeClick"
             landmarkType = "7">
          </BreakpointContent>
@@ -203,6 +187,277 @@
                   offsetFromSymbolStart = "44">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+            timestampString = "545814315.9856451"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "427"
+            endingLineNumber = "427"
+            landmarkName = "-sendMsgVerification:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__48-[TradeLoginViewController sendMsgVerification:]_block_invoke.381"
+                  moduleName = "UniversalApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/wangyu/Desktop/yr/UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+                  timestampString = "546253532.50927"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "427"
+                  endingLineNumber = "427"
+                  offsetFromSymbolStart = "220">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__copy_helper_block_.384"
+                  moduleName = "UniversalApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/wangyu/Desktop/yr/UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+                  timestampString = "546253532.511042"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "423"
+                  endingLineNumber = "423"
+                  offsetFromSymbolStart = "24">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+            timestampString = "545814315.985743"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "433"
+            endingLineNumber = "433"
+            landmarkName = "-buttonTimer:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[TradeLoginViewController buttonTimer:]"
+                  moduleName = "UniversalApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/wangyu/Desktop/yr/UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+                  timestampString = "545802394.685354"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "84">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__40-[TradeLoginViewController buttonTimer:]_block_invoke"
+                  moduleName = "UniversalApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/wangyu/Desktop/yr/UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+                  timestampString = "545802394.6870559"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "24">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__destroy_helper_block_.369"
+                  moduleName = "UniversalApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/wangyu/Desktop/yr/UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+                  timestampString = "545802394.688747"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+            timestampString = "545814315.985829"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "405"
+            endingLineNumber = "405"
+            landmarkName = "-sendMsgVerification:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+            timestampString = "545814315.9859051"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "424"
+            endingLineNumber = "424"
+            landmarkName = "-sendMsgVerification:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+            timestampString = "545814315.985988"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "411"
+            endingLineNumber = "411"
+            landmarkName = "-sendMsgVerification:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+            timestampString = "545814315.986063"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
+            landmarkName = "-buttonTradeClick"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[TradeLoginViewController buttonTradeClick]"
+                  moduleName = "UniversalApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/wangyu/Desktop/yr/UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+                  timestampString = "546253532.5194989"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
+                  offsetFromSymbolStart = "820">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__44-[TradeLoginViewController buttonTradeClick]_block_invoke_7"
+                  moduleName = "UniversalApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/wangyu/Desktop/yr/UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+                  timestampString = "546253532.521451"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "141"
+                  endingLineNumber = "141"
+                  offsetFromSymbolStart = "104">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+            timestampString = "545814315.986163"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
+            landmarkName = "-buttonTradeClick"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+            timestampString = "545814315.986264"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
+            landmarkName = "-buttonTradeClick"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UniversalApp/Modules/Login/Controller/TradeLoginViewController.m"
+            timestampString = "545814315.986342"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
+            landmarkName = "-buttonTradeClick"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UniversalApp/Modules/Mine/Controller/MineViewController.m"
+            timestampString = "546253532.269318"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

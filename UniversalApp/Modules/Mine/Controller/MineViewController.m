@@ -18,12 +18,13 @@
 
 #define KHeaderHeight ((260 * Iphone6ScaleWidth) + kStatusBarHeight)
 
-@interface MineViewController ()<UITableViewDelegate,UITableViewDataSource,headerViewDelegate,XYTransitionProtocol,CLLocationManagerDelegate,PKPaymentAuthorizationViewControllerDelegate>
+@interface MineViewController ()<UITableViewDelegate,UITableViewDataSource,headerViewDelegate,XYTransitionProtocol,CLLocationManagerDelegate,PKPaymentAuthorizationViewControllerDelegate,UITextFieldDelegate>
 {
     UILabel * lbl;
 
     MineHeaderView *_headerView;//头部view
     UIView *_NavView;//导航栏
+    UITextField *_field;
     
 }
 @property (nonatomic, strong) CLLocationManager *locationManagerReplace;
@@ -46,6 +47,15 @@
             UUScoreListViewController *scoreList = [UUScoreListViewController new];
             scoreList.scoreData = _scoreArr;
             [self.navigationController pushViewController:scoreList animated:YES];
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIAlertController mj_showAlertWithTitle:@"您还没有积分记录" message:@"I am sorry!" appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
+                    alertMaker.addActionDefaultTitle(@"确认");
+                    
+                } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
+                    
+                }];
+            });
         }
     }];
     
@@ -60,7 +70,30 @@
         [self ApplePay];
     }];
     
-    [itemArr addObjectsFromArray:@[myWalletItem,myPositionItem,myWXPayItem,applePayItem]];
+    LMJWordItem *zhengzeItem = [LMJWordItem itemWithTitle:@"是电话号码？" subTitle:@"点击" itemOperation:^(NSIndexPath *indexPath) {
+        
+        LMJItemSection *section = self.sections[0];
+        
+        LMJWordItem *myPosition = section.items[4];
+        if (_field.text.length == 0 || _field == nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIAlertController mj_showAlertWithTitle:@"请输入手机号码" message:@"I am sorry!" appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
+                    alertMaker.addActionDefaultTitle(@"确认");
+                    
+                } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
+                    
+                }];
+            });
+            _field.text = @"";
+            return;
+        }
+        myPosition.subTitle = ([ToolHelper validateMobile:_field.text] || [ToolHelper validatePhone:_field.text] || [ToolHelper validatePhoneNone:_field.text]) ? @"是" : @"否";
+        _field.text = @"";
+        
+        [self.tableView reloadRow:4 inSection:0 withRowAnimation:UITableViewRowAnimationFade];
+    }];
+    
+    [itemArr addObjectsFromArray:@[myWalletItem,myPositionItem,myWXPayItem,applePayItem,zhengzeItem]];
     [self.sections addObject:[LMJItemSection sectionWithItems:itemArr andHeaderTitle:nil footerTitle:nil]];
     [self.tableView reloadData];
     UIBarButtonItem *rightConfigItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(changeUser)];
@@ -84,7 +117,7 @@
         NSLog(@"%@",compArr);
         weakSelf.scoreArr = compArr.mutableCopy;
 //        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options: error:nil];
-        scoreBlock([compArr[0][@"积分余额"] stringValue]);
+        scoreBlock(compArr.count > 0 ? [compArr[0][@"积分余额"] stringValue]:@"0");
     } failure:^(NSError *error, NSURLSessionTask *task) {
         
     }];
@@ -167,6 +200,40 @@
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 0.1;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    if (indexPath.row == 4 ) {
+        if (_field == nil) {
+            _field = [[UITextField alloc]initWithFrame:CGRectMake(KScreenWidth * 0.3, 0, KScreenWidth * 0.5, cell.height)];
+        }
+        _field.placeholder = @"请输入手机号码";
+        _field.delegate = self;
+        _field.keyboardType = UIKeyboardTypeNumberPad;
+        _field.textAlignment = NSTextAlignmentCenter;
+        [cell.contentView addSubview:_field];
+        
+    }
+   
+
+    return cell;
+}
+
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    textField.text = @"";
+    
+    
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    LMJItemSection *section = self.sections[0];
+    LMJWordItem *myPosition = section.items[4];
+    myPosition.subTitle = @"点击";
+     [self.tableView reloadRow:4 inSection:0 withRowAnimation:UITableViewRowAnimationFade];
+    
 }
 
 

@@ -57,7 +57,7 @@
     pushCofigModel.identifier = 9000;
     pushCofigModel.selectionStyle = UITableViewCellSelectionStyleNone;
     pushCofigModel.isShowArrow = YES;
-
+    
     
     HSBaseCellModel *soundsCofigModel = [HSBaseCellModel new];
     soundsCofigModel.title = @"声音";
@@ -79,9 +79,22 @@
     aboutCofigModel.selectionStyle = UITableViewCellSelectionStyleNone;
     aboutCofigModel.isShowArrow = YES;
     
+    HSBaseCellModel *changeMobileNum = [HSBaseCellModel new];
+    changeMobileNum.title = @"更改手机号码";
+    changeMobileNum.identifier = 9004;
+    changeMobileNum.selectionStyle = UITableViewCellSelectionStyleNone;
+    changeMobileNum.isShowArrow = YES;
+    
+    HSBaseCellModel *changePassword = [HSBaseCellModel new];
+    changePassword.title = @"更改密码";
+    changePassword.identifier = 9005;
+    changePassword.selectionStyle = UITableViewCellSelectionStyleNone;
+    changePassword.isShowArrow = YES;
+    
     NSArray *one = @[pushCofigModel];
     NSArray *two = @[soundsCofigModel,cleanCofigModel,aboutCofigModel];
-    _dataArray = @[one,two];
+    NSArray *three = @[changeMobileNum,changePassword];
+    _dataArray = @[one,two,three];
     [self.tableView reloadData];
     
 }
@@ -129,6 +142,22 @@
     HSBaseCellModel *model = _dataArray[indexPath.section][indexPath.row];
     NSLog(@"点击了 %@",model.title);
     
+    switch (model.identifier) {
+        case 9004://更改手机号码
+        {
+            
+        }
+            break;
+        case 9005://更改密码
+        {
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
     [UIAlertController mj_showAlertWithTitle:[NSString stringWithFormat:@"点击了 %@",model.title] message:@"正在开发中..." appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
         
         alertMaker.addActionDefaultTitle(@"确认");
@@ -136,16 +165,16 @@
     } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
         
     }];
-//    switch (indexPath.row) {
-//        case 9000:
-//        {
-//            NSLog(@"点击了 %@",model.title);
-//        }
-//            break;
-//            
-//        default:
-//            break;
-//    }
+    //    switch (indexPath.row) {
+    //        case 9000:
+    //        {
+    //            NSLog(@"点击了 %@",model.title);
+    //        }
+    //            break;
+    //
+    //        default:
+    //            break;
+    //    }
 }
 -(void)viewDidLayoutSubviews
 {
@@ -219,13 +248,14 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
+

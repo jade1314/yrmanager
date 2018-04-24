@@ -14,5 +14,5 @@
 @property (nonatomic, strong) RootViewController *fromViewController;// 从哪个页面过来的
 
 @property (nonatomic, strong) void(^backTradeLoginBlock)(void);//回调
-
+@property (nonatomic, assign) BOOL isLostPassword;
 @end

@@ -12,6 +12,7 @@
 #define CommonMacros_h
 
 #pragma mark - ——————— 用户相关 ————————
+
 //登录状态改变通知
 #define KNotificationLoginStateChange @"loginStateChange"
 

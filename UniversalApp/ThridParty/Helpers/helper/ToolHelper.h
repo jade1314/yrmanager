@@ -387,6 +387,10 @@ typedef void(^CheckVersionCallBack)(NSString *respondString);
 
 //手机号正则
 +(BOOL)validateMobile:(NSString *)mobile;
+//座机正则
++(BOOL)validatePhone:(NSString *)Phone;
+//座机正则
++(BOOL)validatePhoneNone:(NSString *)Phone;
 //三个连续的数字不可以
 +(BOOL)validateMath:(NSString *)math;
 //密码不能有3个相同或顺序的数字
