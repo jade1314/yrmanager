@@ -137,7 +137,9 @@ SINGLETON_FOR_CLASS(UserManager);
     
     self.curUserInfo = nil;
     self.isLogined = NO;
-
+    [defaults setObject:@(3) forKey:KPageType];
+    [defaults setValue:nil forKey:KUserData];
+    
 //    //移除缓存
     YYCache *cache = [[YYCache alloc]initWithName:KUserCacheName];
     [cache removeAllObjectsWithBlock:^{

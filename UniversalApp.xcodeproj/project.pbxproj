@@ -105,6 +105,9 @@
 		8827D83920567A5C0017B016 /* DCPathCenterButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8827D83620567A5C0017B016 /* DCPathCenterButton.m */; };
 		8827D84320567AD30017B016 /* MCFireworksButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8827D83F20567AD30017B016 /* MCFireworksButton.m */; };
 		8827D84420567AD30017B016 /* MCFireworksView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8827D84020567AD30017B016 /* MCFireworksView.m */; };
+		8834B62A2099C12900EA14F9 /* UUChangeMobileNumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8834B6292099C12900EA14F9 /* UUChangeMobileNumViewController.m */; };
+		8834B62E2099C4BD00EA14F9 /* UUChangeMobileAndPasswordTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8834B62D2099C4BD00EA14F9 /* UUChangeMobileAndPasswordTableViewCell.m */; };
+		8834B6312099C90700EA14F9 /* CommitBtnTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8834B62F2099C90700EA14F9 /* CommitBtnTool.m */; };
 		884BF92C2057C70400F498B6 /* CustomTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 884BF8E92057C70300F498B6 /* CustomTextView.m */; };
 		884BF92D2057C70400F498B6 /* WarningAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 884BF8ED2057C70300F498B6 /* WarningAlertView.m */; };
 		884BF92E2057C70400F498B6 /* AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 884BF8EF2057C70300F498B6 /* AlertView.m */; };
@@ -505,6 +508,12 @@
 		8827D84020567AD30017B016 /* MCFireworksView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCFireworksView.m; sourceTree = "<group>"; };
 		8827D84120567AD30017B016 /* MCFireworksButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCFireworksButton.h; sourceTree = "<group>"; };
 		8827D84220567AD30017B016 /* MCFireworksView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCFireworksView.h; sourceTree = "<group>"; };
+		8834B6282099C12900EA14F9 /* UUChangeMobileNumViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UUChangeMobileNumViewController.h; sourceTree = "<group>"; };
+		8834B6292099C12900EA14F9 /* UUChangeMobileNumViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UUChangeMobileNumViewController.m; sourceTree = "<group>"; };
+		8834B62C2099C4BD00EA14F9 /* UUChangeMobileAndPasswordTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UUChangeMobileAndPasswordTableViewCell.h; sourceTree = "<group>"; };
+		8834B62D2099C4BD00EA14F9 /* UUChangeMobileAndPasswordTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UUChangeMobileAndPasswordTableViewCell.m; sourceTree = "<group>"; };
+		8834B62F2099C90700EA14F9 /* CommitBtnTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommitBtnTool.m; sourceTree = "<group>"; };
+		8834B6302099C90700EA14F9 /* CommitBtnTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommitBtnTool.h; sourceTree = "<group>"; };
 		884BF8E92057C70300F498B6 /* CustomTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTextView.m; sourceTree = "<group>"; };
 		884BF8EA2057C70300F498B6 /* CustomTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextView.h; sourceTree = "<group>"; };
 		884BF8EC2057C70300F498B6 /* AlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertView.h; sourceTree = "<group>"; };
@@ -1110,6 +1119,8 @@
 		293D45AC1ECD6926007C64A9 /* ThridParty */ = {
 			isa = PBXGroup;
 			children = (
+				8834B6302099C90700EA14F9 /* CommitBtnTool.h */,
+				8834B62F2099C90700EA14F9 /* CommitBtnTool.m */,
 				885B69CF209173C800B95202 /* RSA.h */,
 				885B69D0209173C800B95202 /* RSA.m */,
 				884BF7652057C6A400F498B6 /* Common */,
@@ -1264,8 +1275,8 @@
 		293D45EC1ECDA36E007C64A9 /* Login(登录相关) */ = {
 			isa = PBXGroup;
 			children = (
+				8834B62B2099C49800EA14F9 /* View */,
 				296F9A131F04F15B00909CDB /* Model */,
-				296F9A161F04F15B00909CDB /* View */,
 				293D45ED1ECDA36E007C64A9 /* Controller */,
 				296F9A121F04F15B00909CDB /* Logic */,
 				296F9A151F04F15B00909CDB /* Service */,
@@ -1292,6 +1303,8 @@
 				8804EADD205F86EF00285A27 /* RegisterLoginViewController.m */,
 				8804EAE0205F894C00285A27 /* TradeLoginViewController.h */,
 				8804EADF205F894B00285A27 /* TradeLoginViewController.m */,
+				8834B6282099C12900EA14F9 /* UUChangeMobileNumViewController.h */,
+				8834B6292099C12900EA14F9 /* UUChangeMobileNumViewController.m */,
 				8804CC222065FE5100B35573 /* UUCompanyListViewController.h */,
 				8804CC232065FE5100B35573 /* UUCompanyListViewController.m */,
 				8804EAE5205F8B8C00285A27 /* ReplaceCell.h */,
@@ -1546,13 +1559,6 @@
 			path = Service;
 			sourceTree = "<group>";
 		};
-		296F9A161F04F15B00909CDB /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		296F9EAF1ECC64CE0063A255 = {
 			isa = PBXGroup;
 			children = (
@@ -1765,6 +1771,15 @@
 				8827D84220567AD30017B016 /* MCFireworksView.h */,
 			);
 			path = MCFireworksButton;
+			sourceTree = "<group>";
+		};
+		8834B62B2099C49800EA14F9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8834B62C2099C4BD00EA14F9 /* UUChangeMobileAndPasswordTableViewCell.h */,
+				8834B62D2099C4BD00EA14F9 /* UUChangeMobileAndPasswordTableViewCell.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		884BF7652057C6A400F498B6 /* Common */ = {
@@ -2997,6 +3012,7 @@
 				884BF9A32057C71F00F498B6 /* UIImageView+LBBlurredImage.m in Sources */,
 				884BFA5F2057C74B00F498B6 /* TYAlertView.m in Sources */,
 				88C4BBD6206497AD005B8F4F /* UIView+GestureCallback.m in Sources */,
+				8834B62A2099C12900EA14F9 /* UUChangeMobileNumViewController.m in Sources */,
 				29CF33301F14B60800DB7507 /* MineLogic.m in Sources */,
 				884BF9AA2057C71F00F498B6 /* UICardView.m in Sources */,
 				884BFA522057C74B00F498B6 /* PinyinHelper.m in Sources */,
@@ -3087,6 +3103,7 @@
 				88F09421206492A4006C4099 /* LMJCollectionViewController.m in Sources */,
 				884BFA672057C74B00F498B6 /* TYBaseAnimation.m in Sources */,
 				88C4BBD3206497AD005B8F4F /* LMJBaseResponse.m in Sources */,
+				8834B62E2099C4BD00EA14F9 /* UUChangeMobileAndPasswordTableViewCell.m in Sources */,
 				884BFA3F2057C74B00F498B6 /* NSMutableDictionary+Set.m in Sources */,
 				8827D83720567A5C0017B016 /* DCPathButton.m in Sources */,
 				884BFA6F2057C88600F498B6 /* FileBMS.m in Sources */,
@@ -3097,6 +3114,7 @@
 				29D3C00A1F4D11A200FD3914 /* TagsButton.m in Sources */,
 				293D46111ECDAEED007C64A9 /* MineViewController.m in Sources */,
 				88C4BBDB206497AD005B8F4F /* UIButton+LMJ.m in Sources */,
+				8834B6312099C90700EA14F9 /* CommitBtnTool.m in Sources */,
 				29530FB01F60F10700D24E05 /* YSLDraggableCardContainer.m in Sources */,
 				29FEE7681ECEC27900C81B60 /* MBProgressHUD+XY.m in Sources */,
 				888C3C7A2057A3AD00F647FB /* HttpRequest.m in Sources */,

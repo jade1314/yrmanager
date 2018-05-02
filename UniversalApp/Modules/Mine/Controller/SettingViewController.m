@@ -9,6 +9,7 @@
 #import "SettingViewController.h"
 #import "BaseTableViewCell.h"
 #import "HSBaseCellModel.h"
+#import "TradeLoginViewController.h"
 
 @interface SettingViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -140,41 +141,35 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     HSBaseCellModel *model = _dataArray[indexPath.section][indexPath.row];
-    NSLog(@"点击了 %@",model.title);
+   
     
     switch (model.identifier) {
         case 9004://更改手机号码
         {
-            
+            TradeLoginViewController *verifyMobile = [[TradeLoginViewController alloc]init];
+            verifyMobile.isLostPassword = LoginVerifyTypeChangeMobile;
+            [self.navigationController pushViewController:verifyMobile animated:YES];
         }
             break;
         case 9005://更改密码
         {
-            
+            TradeLoginViewController *verifyMobile = [[TradeLoginViewController alloc]init];
+            verifyMobile.isLostPassword = LoginVerifyTypeChangePassword;
+            [self.navigationController pushViewController:verifyMobile animated:YES];
         }
             break;
             
         default:
+            [UIAlertController mj_showAlertWithTitle:[NSString stringWithFormat:@"点击了 %@",model.title] message:@"正在开发中..." appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
+                
+                alertMaker.addActionDefaultTitle(@"确认");
+                
+            } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
+                
+            }];
             break;
     }
-    
-    [UIAlertController mj_showAlertWithTitle:[NSString stringWithFormat:@"点击了 %@",model.title] message:@"正在开发中..." appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
-        
-        alertMaker.addActionDefaultTitle(@"确认");
-        
-    } actionsBlock:^(NSInteger buttonIndex, UIAlertAction * _Nonnull action, JXTAlertController * _Nonnull alertSelf) {
-        
-    }];
-    //    switch (indexPath.row) {
-    //        case 9000:
-    //        {
-    //            NSLog(@"点击了 %@",model.title);
-    //        }
-    //            break;
-    //
-    //        default:
-    //            break;
-    //    }
+
 }
 -(void)viewDidLayoutSubviews
 {

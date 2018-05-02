@@ -31,6 +31,9 @@
 //登录信息存储
 #define KUserData @"KUserData"
 
+//退出登录后页面的状态
+#define KPageType @"KPageType"
+
 //Vip客户关联的公司
 #define KCompanyCode @"KCompanyCode"
 

@@ -8,11 +8,20 @@
 
 #import "RootViewController.h"
 
+typedef enum : NSUInteger {
+    LoginVerifyTypeLost,
+    LoginVerifyTypeChangeMobile,
+    LoginVerifyTypeChangePassword,
+    LoginVerifyTypeDefault,
+} LoginVerifyType;
+
 @interface TradeLoginViewController : RootViewController
+
+
 
 @property (nonatomic, strong) RootViewController *pushViewController;// 应该跳转的 ViewController
 @property (nonatomic, strong) RootViewController *fromViewController;// 从哪个页面过来的
 
 @property (nonatomic, strong) void(^backTradeLoginBlock)(void);//回调
-@property (nonatomic, assign) BOOL isLostPassword;
+@property (nonatomic, assign) LoginVerifyType isLostPassword;
 @end

@@ -10,6 +10,7 @@
 #import "HttpRequest.h"
 #import "UUCompanyListViewController.h"
 #import <MOFSPickerManager.h>//提示框
+#import "UUChangeMobileNumViewController.h"
 
 #define messageVerifyTime   6
 
@@ -51,9 +52,12 @@
 #pragma mark LifeCycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = _isLostPassword ? @"忘记密码" : @"登录";
+    self.title = _isLostPassword == LoginVerifyTypeLost ? @"忘记密码":(_isLostPassword == LoginVerifyTypeChangeMobile ? @"修改手机号码" : @"登录");
     timerNum = messageVerifyTime;
     heightFree = 0;
+    if ([defaults objectForKey:KPageType]) {
+        self.isLostPassword = [[defaults objectForKey:KPageType] integerValue];
+    }
     [self.view addSubview:self.certainButton];
     [self createTextFieldThree];
 }
@@ -61,11 +65,14 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    if (self.childViewControllers.count < 2) {
+        self.isLostPassword = [[defaults objectForKey:KPageType] integerValue];
+    }
     [self.navigationController.navigationBar setBackgroundImage:[UIImage getImageWithColor:COLOR_BLUE] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.titleTextAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:18],NSForegroundColorAttributeName:[UIColor whiteColor]};
     //初始化数据
     [self hideKeyboard:0];
-
+   
     //检测 APP 合法性, 配置加密键盘
     NSString *fundStr = @"";
     if (![ToolHelper isBlankString:fundStr]) {
@@ -74,7 +81,7 @@
         _fundCode=fundStr;
     }
     
-    if (_isLostPassword) {
+    if (_isLostPassword != LoginVerifyTypeDefault) {
         UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(backViewController)];
         self.navigationItem.leftBarButtonItem = item;
     }
@@ -104,7 +111,7 @@
     UITextField *passwordTFandverification = [self.view viewWithTag:100301];
 //    UITextField *verificationTF = [self.view viewWithTag:100302];
     
-    if (_isLostPassword) {
+    if (_isLostPassword != LoginVerifyTypeDefault) {
         if (![_verificationStr isEqualToString:passwordTFandverification.text]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [UIAlertController mj_showAlertWithTitle:@"请输入正确的短信验证码" message:@"I am sorry!" appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
@@ -116,6 +123,17 @@
             });
             
             return ;
+        }else if (_isLostPassword == LoginVerifyTypeChangeMobile) {
+            //更改会员手机号接口:ChgVipTele/公司编号/会员编号/新手机号
+            UUChangeMobileNumViewController *changeMobile = [[UUChangeMobileNumViewController alloc]init];
+            changeMobile.type = PageTypeMobile;
+            [self.navigationController pushViewController:changeMobile animated:YES];
+            return;
+        }else if (_isLostPassword == LoginVerifyTypeChangePassword) {
+            UUChangeMobileNumViewController *changeMobile = [[UUChangeMobileNumViewController alloc]init];
+            changeMobile.type = PageTypePassword;
+            [self.navigationController pushViewController:changeMobile animated:YES];
+            return;
         } else {
             KPostNotification(KNotificationLoginStateChange, @YES);
             return;
@@ -143,6 +161,7 @@
         if ([dict[@"Id"] length] > 0) {
             [defaults setObject:dict forKey:KUserData];
             KPostNotification(KNotificationLoginStateChange, @YES);
+            
         }else{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [UIAlertController mj_showAlertWithTitle:dict[@"ErrMsg"] message:@"I am sorry!" appearanceProcess:^(JXTAlertController * _Nonnull alertMaker) {
@@ -213,7 +232,7 @@
         _certainButton.backgroundColor=COLOR_YELLOW;
         _certainButton.layer.cornerRadius=5;
         _certainButton.layer.masksToBounds=YES;
-        [_certainButton setTitle:_isLostPassword ? @"确定验证码" : @"确 定" forState:UIControlStateNormal];
+        [_certainButton setTitle:_isLostPassword != LoginVerifyTypeDefault ? @"确定验证码" : @"确 定" forState:UIControlStateNormal];
         [_certainButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _certainButton.titleLabel.font=[UIFont systemFontOfSize:15];
         [_certainButton addTarget:self action:@selector(buttonTradeClick) forControlEvents:UIControlEventTouchUpInside];
@@ -228,7 +247,7 @@
         [selectC addTarget:self action:@selector(selectCompany) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:selectC];
         //忘记密码
-        if (!_isLostPassword) {
+        if (_isLostPassword == LoginVerifyTypeDefault) {
             CGSize forgetPasswordSize=[ToolHelper sizeForNoticeTitle:@"忘记密码" font:[UIFont systemFontOfSize:14]];
             UIButton *forgetBnt=[[UIButton alloc] initWithFrame:CGRectMake(0, _certainButton.bottom + 10, forgetPasswordSize.width+2*KSINGLELINE_WIDTH, 20)];
             forgetBnt.right = _certainButton.right;
@@ -245,7 +264,7 @@
 //忘记密码
 - (void) forgetPassword {
     TradeLoginViewController *lostPasswordV = [[TradeLoginViewController alloc]init];
-    lostPasswordV.isLostPassword = YES;
+    lostPasswordV.isLostPassword = LoginVerifyTypeLost;
     [self.navigationController pushViewController:lostPasswordV animated:YES];
     
 }
@@ -257,6 +276,7 @@
 
 #pragma mark 创建3个textField框
 - (void)createTextFieldThree {
+    
     //获取尺寸
     CGSize codeSize=[ToolHelper sizeForNoticeTitle:@"更换资金账号" font:[UIFont boldSystemFontOfSize:15]];
     //图标集
@@ -286,7 +306,7 @@
             LeftButton.frame=CGRectMake(20, (60-21)/2, 19, 21);
             LeftButton.userInteractionEnabled=NO;
         }else if (i==1){
-            if (_isLostPassword) {
+            if (_isLostPassword != LoginVerifyTypeDefault) {
                 LeftButton.userInteractionEnabled=NO;
                 LeftButton.frame=CGRectMake(20, (60-21)/2, 21, 21);
             } else {
@@ -307,9 +327,10 @@
             numberField.secureTextEntry=NO;//默认密文
             numberField.keyboardType = UIKeyboardTypeNumberPad;
         }else if(i==1){
-            if (_isLostPassword) {
+            if (_isLostPassword != LoginVerifyTypeDefault) {
                 numberField.clearButtonMode=UITextFieldViewModeWhileEditing;
                 numberField.placeholder=@"请输入验证码";
+                numberField.keyboardType = UIKeyboardTypeNumberPad;
             } else {
                 numberField.clearButtonMode = UITextFieldViewModeNever;
                 numberField.secureTextEntry = YES;
@@ -346,7 +367,7 @@
                 make.size.mas_equalTo(CGSizeMake(kScreenWidth - 54 - 140 - 10, 60));
             }
         }];
-        if (_isLostPassword && i == 1) {
+        if (_isLostPassword != LoginVerifyTypeDefault && i == 1) {
             uWeakSelf
             UIButton *sendMsg = [[UIButton alloc]initWithFrame:CGRectMake(KScreenWidth - 100, 0, 100, 60) buttonTitle:@"短信验证码" normalBGColor:COLOR_GREEN selectBGColor:COLOR_BLUE normalColor:COLOR_DARKGREY selectColor:COLOR_DARKGREY buttonFont:[UIFont systemFontOfSize:12] cornerRadius:5 doneBlock:^(UIButton *sender) {
                 [weakSelf sendMsgVerification:sender];
