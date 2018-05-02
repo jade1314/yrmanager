@@ -123,4 +123,11 @@ pod 'ZFDownload' ,  '~>1.0.2'
 # mark- 好玩的
 # 泡泡uibutton
 pod 'DWBubbleMenuButton' ,  '~>1.0.1'
+
+
+# 银联支付
+pod 'UPPaySDK' ,  '~>3.3.6'
+
+# RSA加密
+pod 'RSA', '~> 1.0.1'
 end

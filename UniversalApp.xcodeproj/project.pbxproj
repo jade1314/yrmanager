@@ -212,6 +212,10 @@
 		884BFA6E2057C88600F498B6 /* FileAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = 884BFA6A2057C88600F498B6 /* FileAgent.m */; };
 		884BFA6F2057C88600F498B6 /* FileBMS.m in Sources */ = {isa = PBXBuildFile; fileRef = 884BFA6B2057C88600F498B6 /* FileBMS.m */; };
 		884EFC9A20690699002508B5 /* UUScoreListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 884EFC9920690699002508B5 /* UUScoreListViewController.m */; };
+		885B69D1209173C900B95202 /* RSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 885B69D0209173C800B95202 /* RSA.m */; };
+		885B69D22091752B00B95202 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 886018FC205A432A0012AD49 /* CFNetwork.framework */; };
+		885B69D42091753500B95202 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 885B69D32091753500B95202 /* SystemConfiguration.framework */; };
+		885B69D62091754300B95202 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 885B69D52091754300B95202 /* libz.tbd */; };
 		8866AF122064BBCB00CCCF0A /* YYFPSLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8866AEF62064BBCB00CCCF0A /* YYFPSLabel.m */; };
 		8866AF132064BBCB00CCCF0A /* GVUserDefaults+LMJ.m in Sources */ = {isa = PBXBuildFile; fileRef = 8866AEF72064BBCB00CCCF0A /* GVUserDefaults+LMJ.m */; };
 		8866AF182064BBCB00CCCF0A /* LMJIntroductoryPagesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8866AEFF2064BBCB00CCCF0A /* LMJIntroductoryPagesView.m */; };
@@ -724,6 +728,10 @@
 		884BFA702057D18500F498B6 /* UniversalApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UniversalApp.entitlements; sourceTree = "<group>"; };
 		884EFC9820690699002508B5 /* UUScoreListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UUScoreListViewController.h; sourceTree = "<group>"; };
 		884EFC9920690699002508B5 /* UUScoreListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UUScoreListViewController.m; sourceTree = "<group>"; };
+		885B69CF209173C800B95202 /* RSA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSA.h; sourceTree = "<group>"; };
+		885B69D0209173C800B95202 /* RSA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSA.m; sourceTree = "<group>"; };
+		885B69D32091753500B95202 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		885B69D52091754300B95202 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		886018FC205A432A0012AD49 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		8866AEF52064BBCB00CCCF0A /* YYFPSLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFPSLabel.h; sourceTree = "<group>"; };
 		8866AEF62064BBCB00CCCF0A /* YYFPSLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYFPSLabel.m; sourceTree = "<group>"; };
@@ -867,6 +875,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				885B69D62091754300B95202 /* libz.tbd in Frameworks */,
+				885B69D42091753500B95202 /* SystemConfiguration.framework in Frameworks */,
+				885B69D22091752B00B95202 /* CFNetwork.framework in Frameworks */,
 				88C4BCFC2064AAA4005B8F4F /* MapKit.framework in Frameworks */,
 				88C4BCFA2064AA6A005B8F4F /* libbz2.1.0.tbd in Frameworks */,
 				88C4BCF82064AA60005B8F4F /* libiconv.2.4.0.tbd in Frameworks */,
@@ -1099,6 +1110,8 @@
 		293D45AC1ECD6926007C64A9 /* ThridParty */ = {
 			isa = PBXGroup;
 			children = (
+				885B69CF209173C800B95202 /* RSA.h */,
+				885B69D0209173C800B95202 /* RSA.m */,
 				884BF7652057C6A400F498B6 /* Common */,
 				884BF8022057C6A400F498B6 /* Helpers */,
 				888C3CBB2057B22F00F647FB /* UIImage+WxlGif.h */,
@@ -1707,6 +1720,8 @@
 		6C3D66AC810B3ABDE56945D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				885B69D52091754300B95202 /* libz.tbd */,
+				885B69D32091753500B95202 /* SystemConfiguration.framework */,
 				88C4BCFB2064AAA4005B8F4F /* MapKit.framework */,
 				88C4BCF92064AA6A005B8F4F /* libbz2.1.0.tbd */,
 				88C4BCF72064AA5F005B8F4F /* libiconv.2.4.0.tbd */,
@@ -2959,6 +2974,7 @@
 				88F0941F206492A4006C4099 /* LMJRefreshCollectionViewController.m in Sources */,
 				290DE9261ED19B7F00A45FF6 /* AppManager.m in Sources */,
 				2914E4931F20A4F8001C01DB /* ProfileViewController.m in Sources */,
+				885B69D1209173C900B95202 /* RSA.m in Sources */,
 				88F0941C206492A4006C4099 /* LMJStaticTableViewController.m in Sources */,
 				2973A81A1EDEE6BE002751F0 /* GameInfo.m in Sources */,
 				290A97DD1F4AB24A006BF882 /* TagsViewController.m in Sources */,

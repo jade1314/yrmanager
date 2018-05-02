@@ -15,9 +15,18 @@
 #import <CoreLocation/CoreLocation.h>
 #import "WXApiRequestHandler.h"
 #import "UUScoreListViewController.h"//积分列表
+//UPPAY
+#import <UPPaymentControl.h>
+#include <sys/socket.h> // Per msqr
+#include <sys/sysctl.h>
+#include <net/if.h>
+#include <net/if_dl.h>
+//UPPAY
 
 #define KHeaderHeight ((260 * Iphone6ScaleWidth) + kStatusBarHeight)
-
+#define kMode_Development             @"01"
+#define kURL_TN_Normal                @"http://101.231.204.84:8091/sim/getacptn"
+#define kURL_TN_Configure             @"http://101.231.204.84:8091/sim/app.jsp?user=123456789"
 @interface MineViewController ()<UITableViewDelegate,UITableViewDataSource,headerViewDelegate,XYTransitionProtocol,CLLocationManagerDelegate,PKPaymentAuthorizationViewControllerDelegate,UITextFieldDelegate>
 {
     UILabel * lbl;
@@ -25,10 +34,12 @@
     MineHeaderView *_headerView;//头部view
     UIView *_NavView;//导航栏
     UITextField *_field;
+    NSString * _tn;//UPPay TN
     
 }
 @property (nonatomic, strong) CLLocationManager *locationManagerReplace;
 @property (nonatomic, strong) NSMutableArray    *scoreArr;;
+@property(nonatomic, copy)NSString *tnMode;
 @end
 
 @implementation MineViewController
@@ -93,7 +104,33 @@
         [self.tableView reloadRow:4 inSection:0 withRowAnimation:UITableViewRowAnimationFade];
     }];
     
-    [itemArr addObjectsFromArray:@[myWalletItem,myPositionItem,myWXPayItem,applePayItem,zhengzeItem]];
+    
+    LMJWordItem *UPPayItem = [LMJWordItem itemWithTitle:@"UPPay" subTitle:@"0.01" itemOperation:^(NSIndexPath *indexPath) {
+//        [self UPPay];
+        [[HttpRequest getInstance] postWithURLString:kURL_TN_Normal headers:nil orbYunType:1 parameters:nil success:^(id responseObject, NSURLSessionTask *task) {
+//            NSDictionary *result = [NSJSONSerialization JSONObjectWithData:responseObject options:3 error:nil];
+            _tn = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+            if (_tn) {
+                [self UPPay];
+            }
+        } failure:^(NSError *error, NSURLSessionTask *task) {
+            
+        }];
+    }];
+    LMJWordItem *UPPayUserItem = [LMJWordItem itemWithTitle:@"UPPay(可配置用户)" subTitle:@"0.01" itemOperation:^(NSIndexPath *indexPath) {
+        //        [self UPPay];
+        [[HttpRequest getInstance] postWithURLString:kURL_TN_Configure headers:nil orbYunType:1 parameters:nil success:^(id responseObject, NSURLSessionTask *task) {
+//            NSDictionary *result = [NSJSONSerialization JSONObjectWithData:responseObject options:3 error:nil];
+            _tn = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+            if (_tn) {
+                [self UPPay];
+            }
+        } failure:^(NSError *error, NSURLSessionTask *task) {
+            
+        }];
+    }];
+    
+    [itemArr addObjectsFromArray:@[myWalletItem,myPositionItem,myWXPayItem,applePayItem,zhengzeItem,UPPayItem,UPPayUserItem]];
     [self.sections addObject:[LMJItemSection sectionWithItems:itemArr andHeaderTitle:nil footerTitle:nil]];
     [self.tableView reloadData];
     UIBarButtonItem *rightConfigItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(changeUser)];
@@ -357,6 +394,18 @@
     //系统会一直更新数据，直到选择停止更新，因为我们只需要获得一次经纬度即可，所以获取之后就停止更新
     [manager stopUpdatingLocation];
     
+}
+
+//银联支付
+- (void)UPPay {
+    if (_tn != nil && _tn.length > 0)
+    {
+        
+        NSLog(@"tn=%@",_tn);
+        
+        [[UPPaymentControl defaultControl] startPay:_tn fromScheme:@"UPPayDemo" mode:self.tnMode viewController:self];
+        
+    }
 }
 
 @end

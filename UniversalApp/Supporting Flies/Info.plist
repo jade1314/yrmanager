@@ -34,11 +34,24 @@
 				<string>fb776442542471056</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>UPPayDemo</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>uppayx3</string>
+		<string>uppayx2</string>
+		<string>uppayx1</string>
+		<string>uppaywallet</string>
+		<string>uppaysdk</string>
 		<string>wechat</string>
 		<string>weixin</string>
 		<string>mqqapi</string>
