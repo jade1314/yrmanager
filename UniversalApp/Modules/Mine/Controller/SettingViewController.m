@@ -148,6 +148,7 @@
         {
             TradeLoginViewController *verifyMobile = [[TradeLoginViewController alloc]init];
             verifyMobile.isLostPassword = LoginVerifyTypeChangeMobile;
+            [defaults setObject:@(LoginVerifyTypeChangeMobile) forKey:KPageType];
             [self.navigationController pushViewController:verifyMobile animated:YES];
         }
             break;
@@ -155,6 +156,7 @@
         {
             TradeLoginViewController *verifyMobile = [[TradeLoginViewController alloc]init];
             verifyMobile.isLostPassword = LoginVerifyTypeChangePassword;
+            [defaults setObject:@(LoginVerifyTypeChangePassword) forKey:KPageType];
             [self.navigationController pushViewController:verifyMobile animated:YES];
         }
             break;
