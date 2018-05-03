@@ -52,6 +52,11 @@
 #pragma mark LifeCycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    if ([defaults objectForKey:KPageType]) {
+        self.isLostPassword = [[defaults objectForKey:KPageType] integerValue];
+    }else {
+        self.isLostPassword = LoginVerifyTypeDefault;
+    }
     self.title = _isLostPassword == LoginVerifyTypeLost ? @"忘记密码":(_isLostPassword == LoginVerifyTypeChangeMobile ? @"修改手机号码" : @"登录");
     timerNum = messageVerifyTime;
     heightFree = 0;
@@ -88,6 +93,9 @@
 }
 
 - (void) backViewController {
+    if ([[defaults objectForKey:KPageType] integerValue] == LoginVerifyTypeLost) {
+        [defaults setObject:@(LoginVerifyTypeDefault) forKey:KPageType];
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -265,6 +273,7 @@
 - (void) forgetPassword {
     TradeLoginViewController *lostPasswordV = [[TradeLoginViewController alloc]init];
     lostPasswordV.isLostPassword = LoginVerifyTypeLost;
+    [defaults setObject:@(LoginVerifyTypeLost) forKey:KPageType];
     [self.navigationController pushViewController:lostPasswordV animated:YES];
     
 }
